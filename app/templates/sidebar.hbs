@@ -1,31 +1,36 @@
-{{input value=query}}
+{{#if isLoaded}}
+  <ol id='toc-list'>
+  <li class="level-1">{{input value=query}}</li>
 
-{{#if isSearching}}
-{{partial 'searchResults'}}
-{{else}}
-<ol id='toc-list'>
-  <li class="level-1 ">
-    <a href='#'>Modules</a>
-    <ol>
-      {{#each modules}}
-        <li class="level-3"><a href="#fixme">{{this}}</a></li>
-      {{/each}}
-    </ol>
-  </li>
-  <li class="level-1 ">
-    <a href='#'>Namespaces</a>
-    <ol>
-      {{#each namespaces}}
-        <li class="level-3"><a href="#fixme">{{this}}</a></li>
-      {{/each}}
-    </ol>
-  </li>
-  <li class="level-1 ">
-    <a href='#'>Classes</a>
-    <ol>
-      {{#each classes}}
-        <li class="level-3"><a href="#fixme">{{this}}</a></li>
-      {{/each}}
-    </ol>
-  </li>
+  {{#if isSearching}}
+  {{partial 'searchResults'}}
+  {{else}}
+    <li class="level-1 ">
+      <a href='#'>Modules</a>
+      <ol>
+        {{#each modules}}
+          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+        {{/each}}
+      </ol>
+    </li>
+    <li class="level-1 ">
+      <a href='#'>Namespaces</a>
+      <ol>
+        {{#each namespaces}}
+          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+        {{/each}}
+      </ol>
+    </li>
+    <li class="level-1 ">
+      <a href='#'>Classes</a>
+      <ol>
+        {{#each classes}}
+          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+        {{/each}}
+      </ol>
+    </li>
+  {{/if}}
+  </ol>
+  {{else}}
+  Loading...
 {{/if}}

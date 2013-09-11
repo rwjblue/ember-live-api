@@ -3,6 +3,10 @@ var SidebarController = Ember.ObjectController.extend({
   timer: null,
   lastQuery: null,
 
+  isLoaded: function(){
+    return !!this.get('api.data');
+  }.property('api.data'),
+
   isSearching: function(){
     var query = this.get('query');
 
