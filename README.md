@@ -10,6 +10,7 @@ To get started:
 git clone https://github.com/rjackson/ember-live-api.git
 cd ember-live-api
 npm install
+npm install -g grunt-cli # if you don't already have it
 grunt server
 ```
 

@@ -1,3 +1,4 @@
+
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
 NOTHING = /!^$/;
@@ -113,7 +114,7 @@ function parseQuery(query) {
   return result;
 }
 
-var ApiSearch = Ember.Object.extend({
+var Api = Ember.Object.extend({
   dataUrl: null,
   load: function(){
     var self = this;
@@ -144,6 +145,7 @@ var ApiSearch = Ember.Object.extend({
 
     return result;
   }.property('data'),
+
   search: function(query) {
     var parsedQuery, compiledQuery, result, data, index;
 
@@ -167,4 +169,4 @@ var ApiSearch = Ember.Object.extend({
   }
 });
 
-export default ApiSearch;
+export default Api;

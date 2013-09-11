@@ -1,4 +1,8 @@
-var IndexController = Ember.ObjectController.extend({
+var SidebarController = Ember.ObjectController.extend({
+  content: function(){
+    return this.get('api.index');
+  }.property('api.index'),
+
   query: null,
   timer: null,
   lastQuery: null,
@@ -6,7 +10,7 @@ var IndexController = Ember.ObjectController.extend({
     var query     = this.get('query'),
         timer     = this.get('timer'),
         lastQuery = this.get('lastQuery'),
-        apiSearch = this.get('model');
+        api       = this.get('api');
 
     if (lastQuery === query) {
       return;
@@ -17,11 +21,11 @@ var IndexController = Ember.ObjectController.extend({
     Ember.run.cancel(timer);
 
     timer = Ember.run.later(this, function(){
-      this.set('searchResults', apiSearch.search(query));
+      this.set('searchResults', api.search(query));
     }, 50);
 
     this.set('timer', timer);
-  }.observes('query'),
+  }.observes('query')
 });
 
-export default IndexController;
+export default SidebarController;
