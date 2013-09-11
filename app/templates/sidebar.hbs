@@ -1,15 +1,31 @@
 {{input value=query}}
-<ul>
-  {{#each searchResults.classes}}
-    <li>{{name}}</li>
-  {{/each}}
-  {{#each searchResults.files}}
-    <li>{{name}}</li>
-  {{/each}}
-  {{#each searchResults.modules}}
-    <li>{{name}}</li>
-  {{/each}}
-  {{#each searchResults.classItems}}
-    <li>{{name}}{{file}}:{{line}}{{type}}</li>
-  {{/each}}
-</ul>
+
+{{#if isSearching}}
+{{partial 'searchResults'}}
+{{else}}
+<ol id='toc-list'>
+  <li class="level-1 ">
+    <a href='#'>Modules</a>
+    <ol>
+      {{#each modules}}
+        <li class="level-3"><a href="#fixme">{{this}}</a></li>
+      {{/each}}
+    </ol>
+  </li>
+  <li class="level-1 ">
+    <a href='#'>Namespaces</a>
+    <ol>
+      {{#each namespaces}}
+        <li class="level-3"><a href="#fixme">{{this}}</a></li>
+      {{/each}}
+    </ol>
+  </li>
+  <li class="level-1 ">
+    <a href='#'>Classes</a>
+    <ol>
+      {{#each classes}}
+        <li class="level-3"><a href="#fixme">{{this}}</a></li>
+      {{/each}}
+    </ol>
+  </li>
+{{/if}}

@@ -1,11 +1,22 @@
 var SidebarController = Ember.ObjectController.extend({
+  query: null,
+  timer: null,
+  lastQuery: null,
+
+  isSearching: function(){
+    var query = this.get('query');
+
+    if (query && query.length > 0) 
+      return true;
+    else
+      return false;
+
+  }.property('query'),
+
   content: function(){
     return this.get('api.index');
   }.property('api.index'),
 
-  query: null,
-  timer: null,
-  lastQuery: null,
   search: function(){
     var query     = this.get('query'),
         timer     = this.get('timer'),

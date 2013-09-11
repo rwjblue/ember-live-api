@@ -12,6 +12,6 @@ var App = Ember.Application.create({
 });
 
 App.register('api:main', Api.create({dataUrl: '/api/api.json'}), {instantiate: false});
-App.inject('controller', 'api', 'api:main')
+App.inject('controller', 'api', 'api:main');
 
 export default App;
