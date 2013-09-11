@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>App</title>
-  <link rel="stylesheet" href="assets/app.css">
+  <title>Ember.js Builds</title>
+  <!-- build:css(tmp/public) assets/app.min.css -->
+  <link rel="stylesheet" href="assets/site.css">
+  <!-- endbuild -->
 
   <!-- for more details visit: https://github.com/yeoman/grunt-usemin -->
 
   <!-- build:js(.) assets/vendor.min.js -->
   <script src="/vendor/jquery/jquery.js"></script>
-  <script src="/vendor/handlebars/handlebars.js"></script>
+  <script src="/vendor/handlebars/handlebars.runtime.js"></script>
   <script src="/vendor/ember/index.js"></script>
   <script src="/vendor/loader.js"></script>
   <!-- endbuild -->
@@ -18,7 +20,50 @@
   <script src="/assets/templates.js"></script>
   <!-- endbuild -->
 </head>
-<body>
+<body class="api api_index">
+  <div id="header">
+    <div id="wrapper">
+      <a id="logo" href="/">&nbsp;</a>
+      <ul id="nav">
+        <li><a href="http://emberjs.com/about">about</a></li>
+        <li><a href="http://emberjs.com/guides">guides</a></li>
+        <li class="active"><a href="/">api</a></li>
+        <li><a href="http://emberjs.com/community">community</a></li>
+        <li><a href="http://emberjs.com/blog">blog</a></li>
+        <li><a href="http://emberjs.com/builds">builds</a></li>
+        <li id="search">
+        <form>
+          <input type="text" id="st-search-input" class="st-search-input" />
+        </form>
+        <div id="st-results-container"></div>
+        </li>
+      </ul>
+
+      <div id="github">
+        <a href="https://github.com/emberjs/ember.js"><img src="/images/fork-us.png">Fork Us!</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-wrapper">
+    <div id="ember-live-api"></div>
+  </div>
+  <div id="footer">
+    <div id="footer-wrapper">
+      <div class="info">
+        Copyright {{currentYear}}<a href="http://tilde.io">Tilde Inc.</a><br>
+        Design by <a href="http://www.heropixel.com">HeroPixel</a></br>
+        <a href="http://emberjs.com/team">Core Team</a> | <a href="http://emberjs.com/sponsors">Project Sponsors</a>
+      </div>
+      <div class="statement">Ember.js is free, open source and always will be.</div>
+      <div class="links">
+        <a class="twitter" href="http://twitter.com/emberjs">Twitter</a>
+        <a class="github" href="https://github.com/emberjs/ember.js">GitHub</a>
+        <a class="googleplus" href="https://plus.google.com/communities/106387049790387471205">Google+</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     window.App = requireModule('appkit/app');
   </script>
