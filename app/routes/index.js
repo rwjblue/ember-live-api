@@ -1,6 +1,8 @@
+import ApiSearch from 'appkit/models/api_search';
+
 var IndexRoute = Ember.Route.extend({
-  model: function() {
-    return ['red', 'yellow', 'blue'];
+  model: function(){
+    return ApiSearch.create({dataUrl: '/api/api.json'});
   }
 });
 
