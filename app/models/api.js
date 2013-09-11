@@ -1,3 +1,10 @@
+/**
+ * Author: Stefan Penner
+ * Secondary Author: Robert Jackson
+ *
+ * Original fully functional YUIDoc parser was written by Stefan Penner
+ * any mistakes, errors, or complete butchering are attributed to Robert Jackson.
+ */
 
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
