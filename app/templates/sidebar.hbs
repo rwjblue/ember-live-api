@@ -1,7 +1,9 @@
 {{#if isLoaded}}
   <ol id='toc-list'>
-  <li class="level-1">{{input value=query}}</li>
-
+    <li class="level-1">
+    <a>Search</a>
+    {{input value=query}}
+    </li>
   {{#if isSearching}}
   {{partial 'searchResults'}}
   {{else}}
@@ -9,14 +11,6 @@
       <a href='#'>Modules</a>
       <ol>
         {{#each modules}}
-          <li class="level-3"><a href="#fixme">{{this}}</a></li>
-        {{/each}}
-      </ol>
-    </li>
-    <li class="level-1 ">
-      <a href='#'>Namespaces</a>
-      <ol>
-        {{#each namespaces}}
           <li class="level-3"><a href="#fixme">{{this}}</a></li>
         {{/each}}
       </ol>
