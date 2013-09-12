@@ -19,7 +19,7 @@
       <a href='#'>Classes</a>
       <ol>
         {{#each classes}}
-          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+        <li class="level-3">{{#link-to 'classes.show' this}}{{this}}{{/link-to}}</li>
         {{/each}}
       </ol>
     </li>

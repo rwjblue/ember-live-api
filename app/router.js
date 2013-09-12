@@ -1,7 +1,7 @@
 var router = Ember.Router.map(function(){
-  // this.resource('posts', function() {
-  //   this.route('new');
-  // });
+  this.resource('classes', function() {
+    this.route('show', {path: '/:class_name'});
+  });
 });
 
 export default router;
