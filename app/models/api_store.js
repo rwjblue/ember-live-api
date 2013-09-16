@@ -6,6 +6,8 @@
  * any mistakes, errors, or complete butchering are attributed to Robert Jackson.
  */
 
+import ApiClass from 'appkit/models/api_class';
+
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
 NOTHING = /!^$/;
@@ -204,10 +206,8 @@ var ApiStore = Ember.Object.extend({
 
     return this.findItem('classes', className).then(function(klass){
       klass.classitems = self.get('classitems').filterBy('class',className);
-      klass.methods    = klass.classitems.filterBy('itemtype','method');
-      klass.properties = klass.classitems.filterBy('itemtype','property');
 
-      return klass;
+      return ApiClass.create({data: klass});
     });
   },
 

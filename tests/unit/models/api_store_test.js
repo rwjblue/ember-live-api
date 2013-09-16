@@ -1,4 +1,5 @@
 import ApiStore from 'appkit/models/api_store';
+import ApiClass from 'appkit/models/api_class';
 
 var sampleDataUrl = '/tests/support/api.json',
     apiStore;
@@ -56,26 +57,14 @@ module("Unit - ApiStore - Classes", {
   }
 });
 
-asyncTest("it can access a class", function(){
+asyncTest("it gets an ApiClass instance back from findClass", function(){
   apiStore.findClass('Ember.ControllerMixin').then(function(obj){
     start();
 
     ok(obj);
-    equal(obj.name, 'Ember.ControllerMixin');
-    equal(obj.module, 'ember');
-    equal(typeof(obj.line), 'number');
-  });
-});
-
-asyncTest("it can access a class's classitems", function(){
-  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
-    start();
-
-    ok(obj);
-    ok(obj.classitems instanceof Array);
-
-    var method = obj.classitems.findBy('name', 'set');
-    equal(method.itemtype, 'method');
+    ok(obj instanceof ApiClass);
+    equal(obj.get('name'), 'Ember.ControllerMixin');
+    equal(obj.get('module'), 'ember');
   });
 });
 
