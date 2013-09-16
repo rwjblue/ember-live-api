@@ -1,6 +1,6 @@
 import Resolver from 'resolver';
 import router from 'appkit/router';
-import Api from 'appkit/models/api';
+import ApiStore from 'appkit/models/api_store';
 
 var App = Ember.Application.create({
   modulePrefix: 'appkit', // TODO: loaded via config
@@ -11,7 +11,8 @@ var App = Ember.Application.create({
   rootElement: '#ember-live-api'
 });
 
-App.register('api:main', Api.create({dataUrl: '/api/api.json'}), {instantiate: false});
-App.inject('controller', 'api', 'api:main');
+App.register('api-store:main', ApiStore.create({dataUrl: '/api/api.json'}), {instantiate: false});
+App.inject('controller', 'apiStore', 'api-store:main');
+App.inject('route', 'apiStore', 'api-store:main');
 
 export default App;

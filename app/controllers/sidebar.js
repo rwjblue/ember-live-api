@@ -4,8 +4,8 @@ var SidebarController = Ember.ObjectController.extend({
   lastQuery: null,
 
   isLoaded: function(){
-    return !!this.get('api.data');
-  }.property('api.data'),
+    return !!this.get('apiStore.data');
+  }.property('apiStore.data'),
 
   isSearching: function(){
     var query = this.get('query');
@@ -18,14 +18,14 @@ var SidebarController = Ember.ObjectController.extend({
   }.property('query'),
 
   content: function(){
-    return this.get('api.index');
-  }.property('api.index'),
+    return this.get('apiStore.index');
+  }.property('apiStore.index'),
 
   search: function(){
     var query     = this.get('query'),
         timer     = this.get('timer'),
         lastQuery = this.get('lastQuery'),
-        api       = this.get('api');
+        apiStore  = this.get('apiStore');
 
     if (lastQuery === query) {
       return;
@@ -36,7 +36,7 @@ var SidebarController = Ember.ObjectController.extend({
     Ember.run.cancel(timer);
 
     timer = Ember.run.later(this, function(){
-      this.set('searchResults', api.search(query));
+      this.set('searchResults', apiStore.search(query));
     }, 50);
 
     this.set('timer', timer);

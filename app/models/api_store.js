@@ -121,17 +121,29 @@ function parseQuery(query) {
   return result;
 }
 
-var Api = Ember.Object.extend({
+var ApiStore = Ember.Object.extend({
   dataUrl: null,
-  load: function(){
-    var self = this;
 
-    Ember.$.getJSON(this.get('dataUrl'), function(data){
+  load: function(url){
+    var self = this,
+        promise;
+
+    promise = Ember.$.getJSON(url, function(data){
+      console.log('setting data');
       self.set('data', data);
     });
+
+    this.set('loading', promise);
+    return promise;
+  },
+
+  autoload: function(){
+    console.log('calling load');
+    return this.load(this.get('dataUrl'));
   }.observes('dataUrl').on('init'),
 
   index: function() {
+    console.log('index');
     var result = {}, 
         data   = this.get('data'),
         entry;
@@ -173,7 +185,11 @@ var Api = Ember.Object.extend({
     result.classItems = filterClassItems(index.classitems,  compiledQuery.classitems).slice(0,30);
 
     return result;
+  },
+
+  getClass: function(className) {
+    return this.get('data')['classes'][className];
   }
 });
 
-export default Api;
+export default ApiStore;
