@@ -30,7 +30,7 @@ test("it exists", function(){
 
 });
 
-test("it can access its methods", function(){
+test("it knows about the classes methods", function(){
   var methods = apiClass.get('methods');
 
   ok(methods instanceof Array, 'methods is an array');
@@ -43,7 +43,7 @@ test("it can access its methods", function(){
   });
 });
 
-test("it can access its properties", function(){
+test("it can access the classes properties", function(){
   var properties = apiClass.get('properties');
 
   ok(properties instanceof Array, 'properties is an array');
@@ -54,4 +54,14 @@ test("it can access its properties", function(){
   properties.forEach(function(property){
     equal(property.itemtype, 'property');
   });
+});
+
+
+test("it can access the its properties", function(){
+  equal(apiClass.get('name'), 'Ember.ControllerMixin');
+  equal(apiClass.get('shortname'), 'Ember.ControllerMixin');
+  equal(apiClass.get('module'), 'ember');
+  equal(apiClass.get('submodule'), 'ember-views');
+  equal(apiClass.get('namespace'), 'Ember');
+  ok(apiClass.get('extension_for') instanceof Array);
 });
