@@ -18,8 +18,8 @@ var SidebarController = Ember.ObjectController.extend({
   }.property('query'),
 
   content: function(){
-    return this.get('apiStore.index');
-  }.property('apiStore.index'),
+    return this.get('apiStore');
+  }.property(),
 
   search: function(){
     var query     = this.get('query'),

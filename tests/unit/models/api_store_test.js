@@ -5,7 +5,7 @@ var sampleDataUrl = '/tests/support/api.json',
 
 function createApiStore(callback){
   apiStore = ApiStore.create({ dataUrl: sampleDataUrl});
-  if (callback) 
+  if (callback)
     apiStore.get('loading').then(callback);
 }
 
@@ -33,8 +33,20 @@ asyncTest("it has the right data", function(){
   });
 });
 
-test("it has an index", function(){
-  ok(apiStore.get('index'));
+test("it has files", function(){
+  ok(apiStore.get('files'));
+});
+
+test("it has classes", function(){
+  ok(apiStore.get('classes'));
+});
+
+test("it has modules", function(){
+  ok(apiStore.get('modules'));
+});
+
+test("it has classitems", function(){
+  ok(apiStore.get('classitems'));
 });
 
 module("Unit - ApiStore - Classes", {
@@ -44,18 +56,44 @@ module("Unit - ApiStore - Classes", {
   }
 });
 
-test("it can access a class", function(){
-  var klass = apiStore.getClass('Ember.ControllerMixin');
+asyncTest("it can access a class", function(){
+  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
+    start();
 
-  ok(klass);
-  equal(klass.name, 'Ember.ControllerMixin');
-  equal(klass.module, 'ember');
-  equal(typeof(klass.line), 'number');
+    ok(obj);
+    equal(obj.name, 'Ember.ControllerMixin');
+    equal(obj.module, 'ember');
+    equal(typeof(obj.line), 'number');
+  });
 });
 
-test("it can access a module", function(){
-  var klass = apiStore.getClass('Ember.ControllerMixin');
+asyncTest("it can access a class's classitems", function(){
+  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
+    start();
 
-  ok(klass);
-  equal(klass.name, 'Ember.ControllerMixin');
+    ok(obj);
+    ok(obj.classitems instanceof Array);
+
+    var method = obj.classitems.findBy('name', 'set');
+    equal(method.itemtype, 'method');
+  });
 });
+
+module("Unit - ApiStore - Modules", {
+  setup: function(){
+    stop();
+    createApiStore(start);
+  }
+});
+
+asyncTest("it can access a module", function(){
+  apiStore.findModule('ember').then(function(obj){
+    start();
+
+    ok(obj);
+    equal(obj.name, 'ember');
+    ok(obj.submodules);
+    ok(obj.classes);
+  });
+});
+

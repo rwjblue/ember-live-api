@@ -123,46 +123,52 @@ function parseQuery(query) {
 
 var ApiStore = Ember.Object.extend({
   dataUrl: null,
+  isLoaded: false,
 
   load: function(url){
-    var self = this,
-        promise;
+    var self = this;
 
-    promise = Ember.$.getJSON(url, function(data){
-      console.log('setting data');
+    return Ember.$.getJSON(url).then(function(data){
       self.set('data', data);
-    });
+      self.set('isLoaded', true);
 
-    this.set('loading', promise);
-    return promise;
+      return data;
+    });
   },
 
   autoload: function(){
-    console.log('calling load');
-    return this.load(this.get('dataUrl'));
+    var self = this,
+        url  = this.get('dataUrl'),
+        promise;
+
+    promise = this.load(this.get('dataUrl'));
+
+    this.set('loading', promise);
+
+    return promise;
   }.observes('dataUrl').on('init'),
 
-  index: function() {
-    console.log('index');
-    var result = {}, 
-        data   = this.get('data'),
-        entry;
+  getKeys: function(type){
+    var data = this.get('data');
 
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        entry = data[key];
+    return Object.keys(data[type]);
+  },
 
-        if (isArray(entry)) {
-          result[key] = entry;
-        } else if (isObject(entry)) {
-          result[key] = keys(entry);
-        } else {
+  classitems: function(){
+    return this.get('data')['classitems'];
+  }.property('data'),
 
-        }
-      }
-    }
 
-    return result;
+  files: function(){
+    return this.getKeys('files');
+  }.property('data'),
+
+  classes: function(){
+    return this.getKeys('classes');
+  }.property('data'),
+
+  modules: function(){
+    return this.getKeys('modules');
   }.property('data'),
 
   search: function(query) {
@@ -176,19 +182,37 @@ var ApiStore = Ember.Object.extend({
     compiledQuery = compileParsedQuery(parsedQuery);
 
     data = this.get('data');
-    index = this.get('index');
 
     // TODO: merge the results
-    result.files      = filter(index.files,   data.files,   compiledQuery.files     ).slice(0,10);
-    result.modules    = filter(index.modules, data.modules, compiledQuery.modules   ).slice(0,10);
-    result.classes    = filter(index.classes, data.classes, compiledQuery.classes   ).slice(0,10);
-    result.classItems = filterClassItems(index.classitems,  compiledQuery.classitems).slice(0,30);
+    result.files      = filter(this.files,   data.files,   compiledQuery.files     ).slice(0,10);
+    result.modules    = filter(this.modules, data.modules, compiledQuery.modules   ).slice(0,10);
+    result.classes    = filter(this.classes, data.classes, compiledQuery.classes   ).slice(0,10);
+    result.classItems = filterClassItems(this.classitems,  compiledQuery.classitems).slice(0,30);
 
     return result;
   },
 
-  getClass: function(className) {
-    return this.get('data')['classes'][className];
+  findItem: function(type, name) {
+    var self = this;
+    return this.get('loading').then(function(){
+      return self.get('data')[type][name];
+    });
+  },
+
+  findClass: function(className){
+    var self = this;
+
+    return this.findItem('classes', className).then(function(klass){
+      klass.classitems = self.get('classitems').filterBy('class',className);
+      klass.methods    = klass.classitems.filterBy('itemtype','method');
+      klass.properties = klass.classitems.filterBy('itemtype','property');
+
+      return klass;
+    });
+  },
+
+  findModule: function(moduleName){
+    return this.findItem('modules', moduleName);
   }
 });
 

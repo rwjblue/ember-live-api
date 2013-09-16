@@ -1,7 +1,9 @@
 
 var ClassesShowRoute = Ember.Route.extend({
   model: function(params){
-    return this.get('apiStore.index').classes[params.className];
+    var apiStore = this.get('apiStore');
+    console.log(apiStore);
+    return apiStore.findClass(params.className);
   }
 });
 
