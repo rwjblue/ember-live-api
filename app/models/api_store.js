@@ -124,31 +124,25 @@ function parseQuery(query) {
 }
 
 var ApiStore = Ember.Object.extend({
-  dataUrl: null,
+  dataUrl: Ember.required(),
   isLoaded: false,
 
-  load: function(url){
-    var self = this;
+  init: function(){
+    var self = this,
+        url  = this.get('dataUrl'),
+        promise;
 
-    return Ember.$.getJSON(url).then(function(data){
+    promise = Ember.$.getJSON(url).then(function(data){
       self.set('data', data);
       self.set('isLoaded', true);
 
       return data;
     });
-  },
-
-  autoload: function(){
-    var self = this,
-        url  = this.get('dataUrl'),
-        promise;
-
-    promise = this.load(this.get('dataUrl'));
 
     this.set('loading', promise);
 
     return promise;
-  }.observes('dataUrl').on('init'),
+  },
 
   getKeys: function(type){
     var data = this.get('data');
