@@ -33,6 +33,8 @@ var ApiClass = Ember.Object.extend({
   file:           Em.computed.alias('data.file'),
   line:           Em.computed.alias('data.line'),
   description:    Em.computed.alias('data.description'),
+  static:         Em.computed.alias('data.static'),
+
 
   filterClassitemsByType: function(type){
     return this.get('classitems').filterBy('itemtype',type);

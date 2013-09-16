@@ -39,7 +39,10 @@ test("it has files", function(){
 });
 
 test("it has classes", function(){
-  ok(apiStore.get('classes'));
+  var classes = apiStore.get('classes');
+
+  ok(classes);
+  ok(classes.length > 0, 'find at least 1 class');
 });
 
 test("it has modules", function(){
@@ -48,6 +51,13 @@ test("it has modules", function(){
 
 test("it has classitems", function(){
   ok(apiStore.get('classitems'));
+});
+
+test("it has namespaces", function(){
+  var namespaces = apiStore.get('namespaces');
+
+  ok(namespaces);
+  ok(namespaces.length > 0, 'find at least 1 namespace');
 });
 
 module("Unit - ApiStore - Classes", {
@@ -86,3 +96,26 @@ asyncTest("it can access a module", function(){
   });
 });
 
+module("Unit - ApiStore - Namespaces", {
+  setup: function(){
+    stop();
+    createApiStore(start);
+  }
+});
+
+asyncTest("it can access a namespace", function(){
+  apiStore.findNamespace('Ember').then(function(obj){
+    start();
+
+    ok(obj);
+    ok(obj.get('static'), 'its a namespace');
+    equal(obj.get('name'), 'Ember');
+  });
+});
+
+module("Unit - ApiStore - Search", {
+  setup: function(){
+    stop();
+    createApiStore(start);
+  }
+});

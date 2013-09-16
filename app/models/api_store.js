@@ -150,21 +150,46 @@ var ApiStore = Ember.Object.extend({
     return Object.keys(data[type]);
   },
 
+  getValues: function(type){
+    var keys = this.getKeys(type),
+        data = this.get('data');
+
+    return keys.map(function(item){
+      return data[type][item];
+    });
+  },
+
   classitems: function(){
     return this.get('data')['classitems'];
   }.property('data'),
 
 
   files: function(){
-    return this.getKeys('files');
+    return this.getKeys('files').sort();
   }.property('data'),
 
   classes: function(){
-    return this.getKeys('classes');
+    var classes = this.getValues('classes');
+
+    classes = classes.filter(function(item){
+      return item.static === undefined;
+    });
+
+    return classes.mapBy('name').sort();
   }.property('data'),
 
   modules: function(){
-    return this.getKeys('modules');
+    return this.getKeys('modules').sort();
+  }.property('data'),
+
+  namespaces: function(){
+    var classes = this.getValues('classes');
+
+    classes = classes.filter(function(item){
+      return item.static === 1;
+    });
+
+    return classes.mapBy('name').sort();
   }.property('data'),
 
   search: function(query) {
@@ -207,6 +232,10 @@ var ApiStore = Ember.Object.extend({
 
   findModule: function(moduleName){
     return this.findItem('modules', moduleName);
+  },
+
+  findNamespace: function(namespaceName){
+    return this.findClass(namespaceName);
   }
 });
 
