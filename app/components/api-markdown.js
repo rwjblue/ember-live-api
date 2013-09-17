@@ -43,11 +43,11 @@ var ApiMarkdown = Ember.Component.extend({
              '        <td class="line-numbers">' +
              '          <pre>' + lineNumbers + '</pre>' +
              '        </td>' +
-             '        <td class="code"><pre>' + code + '</pre></td>'
+             '        <td class="code"><pre>' + code + '</pre></td>' +
              '      </tr>' +
              '    </table>' +
              '  </div>' +
-             '</div>'
+             '</div>';
 
     return result;
   }
