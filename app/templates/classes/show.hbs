@@ -44,7 +44,7 @@
       {{/each}}
     </ul>
     <div class="pane" id="index">
-      {{!<%= partial "api_options" %>}}
+      {{partial 'apiOptions'}}
       {{class-items classitems=methods}}
       {{class-items classitems=properties}}
       {{class-items classitems=events}}
@@ -52,17 +52,6 @@
   </div>
 {{/if}}
 {{!
-
-
-
-<% if types.any? %>
-  <div class="tabs">
-    <ul>
-      <li><a href="#index">Index</a></li>
-      <% types.each do |type| %>
-        <li><a href="#<%= type.pluralize %>"><%= type.pluralize.titleize %></a></li>
-      <% end %>
-    </ul>
   <% types.each do |type| %>
     <div class="pane" id="<%= type.pluralize %>">
       <%= partial "api_options" %>
@@ -71,6 +60,4 @@
       <% end %>
     </div>
   <% end %>
-  </div>
-<% end %>
 }}
