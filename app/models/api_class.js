@@ -44,11 +44,15 @@ var ApiClass = Ember.Object.extend({
 
   methods: function(){
     return this.filterClassitemsByType('method');
-  }.property('classitems'),
+  }.property('classitems.@each'),
 
   properties: function(){
     return this.filterClassitemsByType('property');
-  }.property('classitems'),
+  }.property('classitems.@each'),
+
+  events: function(){
+    return this.filterClassitemsByType('event');
+  }.property('classitems.@each'),
 
 
   findClass: function(className){

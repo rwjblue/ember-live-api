@@ -1,1 +1,83 @@
 {{log model}}
+<h1 class="api-header">
+  {{name}} {{#if static}}Namespace{{else}}Class{{/if}}
+  {{api-file-link apiItem=this cssClass='edit-page'}}
+</h1>
+
+<hr>
+
+{{#if deprecated }}<p>DEPRECATED</p>{{/if}}
+{{#if access }}<p>{{accessUpcase}}</p>{{/if}}
+<div class="class-info">
+  {{#if extends}}<p>Extends: {{api-file-link this}}</p>{{/if}}
+  {{#if uses}}
+    {{#each use in uses}}
+    <p>Uses: {{api-class-link className=use apiStore=apiStore}}</p>
+    {{/each}}
+  {{/if}}
+
+  {{#if file}}
+    <p>Defined in: {{api-file-link apiItem=this}}</p>
+  {{/if}}
+
+  {{#if submodule}}
+    <p>Module: {{api-module-link moduleName=submodule apiStore=apiStore}}</p>
+  {{else}}
+    {{#if module}}
+      <p>Module: {{api-module-link moduleName=module apiStore=apiStore}}</p>
+    {{/if}}
+  {{/if}}
+</div>
+
+{{#if description}}
+  <div class="description">
+    {{api-markdown text=description}}
+  </div>
+{{/if}}
+
+{{#if typesPresent}}
+  <div class="tabs">
+    <ul>
+      <li><a href="#index">Index</a></li>
+      {{#each type in types}}
+        <li><a {{action type}}>{{type}}</a></li>
+      {{/each}}
+    </ul>
+    <div class="pane" id="index">
+      {{!<%= partial "api_options" %>}}
+      {{#if methodsPresent}}
+        <p><h2>Methods</h2></p>
+        <ul class="index-list">
+          {{#each methods itemController="method"}}
+            <li {{bind-attr class=classes}}>
+            <a {{bind-attr href=url}}>{{name}}</a>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+{{!
+
+
+
+<% if types.any? %>
+  <div class="tabs">
+    <ul>
+      <li><a href="#index">Index</a></li>
+      <% types.each do |type| %>
+        <li><a href="#<%= type.pluralize %>"><%= type.pluralize.titleize %></a></li>
+      <% end %>
+    </ul>
+  <% types.each do |type| %>
+    <div class="pane" id="<%= type.pluralize %>">
+      <%= partial "api_options" %>
+      <% @class.classitems[type].sort.each do |(name, data)| %>
+        <%= partial "api/item", :locals => { :item => data, :type => type } %>
+      <% end %>
+    </div>
+  <% end %>
+  </div>
+<% end %>
+}}
