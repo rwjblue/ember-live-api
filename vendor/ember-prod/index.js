@@ -15415,6 +15415,86 @@ var ClassMixin = Mixin.create({
 
   isMethod: false,
 
+  /**
+    Creates a new subclass.
+
+    ```javascript
+    App.Person = Ember.Object.extend({
+      say: function(thing) {
+        alert(thing);
+       }
+    });
+    ```
+
+    This defines a new subclass of Ember.Object: `App.Person`. It contains one method: `say()`.
+
+    You can also create a subclass from any existing class by calling its `extend()`  method. For example, you might want to create a subclass of Ember's built-in `Ember.View` class:
+
+    ```javascript
+    App.PersonView = Ember.View.extend({
+      tagName: 'li',
+      classNameBindings: ['isAdministrator']
+    });
+    ```
+
+    When defining a subclass, you can override methods but still access the implementation of your parent class by calling the special `_super()` method:
+
+    ```javascript
+    App.Person = Ember.Object.extend({
+      say: function(thing) {
+        var name = this.get('name');
+        alert(name + ' says: ' + thing);
+      }
+    });
+
+    App.Soldier = App.Person.extend({
+      say: function(thing) {
+        this._super(thing + ", sir!");
+      },
+      march: function(numberOfHours) {
+        alert(this.get('name') + ' marches for ' + numberOfHours + ' hours.')
+      }
+    });
+
+    var yehuda = App.Soldier.create({
+      name: "Yehuda Katz"
+    });
+
+    yehuda.say("Yes");  // alerts "Yehuda Katz says: Yes, sir!"
+    ```
+
+    The `create()` on line #17 creates an *instance* of the `App.Soldier` class. The `extend()` on line #8 creates a *subclass* of `App.Person`. Any instance of the `App.Person` class will *not* have the `march()` method.
+
+    You can also pass `Ember.Mixin` classes to add additional properties to the subclass.
+
+    ```javascript
+    App.Person = Ember.Object.extend({
+      say: function(thing) {
+        alert(this.get('name') + ' says: ' + thing);
+      }
+    });
+
+    App.SingingMixin = Ember.Mixin.create({
+      sing: function(thing){
+        alert(this.get('name') + ' sings: la la la ' + thing);
+      }
+    });
+
+    App.BroadwayStar = App.Person.extend(App.SingingMixin, {
+      dance: function() {
+        alert(this.get('name') + ' dances: tap tap tap tap ');
+      }
+    });
+    ```
+
+    The `App.BroadwayStar` class contains three methods: `say()`, `sing()`, and `dance()`.
+
+    @method extend
+    @static
+
+    @param {Ember.Mixin} [mixins]* One or more Ember.Mixin classes
+    @param {Object} [arguments]* Object containing values to use within the new class
+  */
   extend: function() {
     var Class = makeCtor(), proto;
     Class.ClassMixin = Mixin.create(this.ClassMixin);
@@ -32040,7 +32120,44 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
 
     To override this option for your entire application, see
     "Overriding Application-wide Defaults".
-
+    
+    ### Disabling the `link-to` heper
+    By default `{{link-to}}` is enabled. 
+    any passed value to `disabled` helper property will disable the `link-to` helper.
+     
+    static use: the `disabled` option:
+ 
+    ```handlebars
+    {{#link-to 'photoGallery' disabled=true}}
+      Great Hamster Photos
+    {{/link-to}}
+    ```
+     
+    dynamic use: the `disabledWhen` option:
+    
+    ```handlebars
+    {{#link-to 'photoGallery' disabledWhen=controller.someProperty}}
+      Great Hamster Photos
+    {{/link-to}}
+    ```
+    
+    any passed value to `disabled` will disable it except `undefined`.
+    to ensure that only `true` disable the `link-to` helper you can
+    override the global behaviour of `Ember.LinkView`.
+         
+    ```javascript  
+    Ember.LinkView.reopen({
+      disabled: Ember.computed(function(key, value) {
+        if (value !== undefined) { 
+          this.set('_isDisabled', value === true); 
+        }
+        return value === true ? get(this, 'disabledClass') : false;
+      })
+    });
+    ```
+     
+    see "Overriding Application-wide Defaults" for more.
+    
     ### Handling `href`
     `{{link-to}}` will use your application's Router to
     fill the element's `href` property with a url that

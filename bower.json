@@ -5,6 +5,7 @@
     "ember-prod": "http://builds.emberjs.com/release/ember.prod.js",
     "handlebars": "1.0.0",
     "jquery": "~1.10",
-    "qunit": "~1.12.0"
+    "qunit": "~1.12.0",
+    "marked": "~0.2.9"
   }
 }
