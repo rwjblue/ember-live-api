@@ -131,3 +131,26 @@ module("Unit - ApiStore - Search", {
     createApiStore(start);
   }
 });
+
+test('search returns a valid search result object', function(){
+  expect(5);
+
+  var results = apiStore.search('ember');
+
+  ok(results);
+  ok(results.files);
+  ok(results.modules);
+  ok(results.classes);
+  ok(results.classItems);
+});
+
+test('can actually search for something', function(){
+  expect(4);
+
+  var results = apiStore.search('dd');
+
+  ok(results.files.length > 0, 'some files were returned');
+  ok(results.modules.length > 0, 'some modules were returned');
+  ok(results.classes.length > 0, 'some classes were returned');
+  ok(results.classItems.length > 0, 'some classItems were returned');
+});

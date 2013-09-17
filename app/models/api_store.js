@@ -205,10 +205,10 @@ var ApiStore = Ember.Object.extend({
     data = this.get('data');
 
     // TODO: merge the results
-    result.files      = filter(this.files,   data.files,   compiledQuery.files     ).slice(0,10);
-    result.modules    = filter(this.modules, data.modules, compiledQuery.modules   ).slice(0,10);
-    result.classes    = filter(this.classes, data.classes, compiledQuery.classes   ).slice(0,10);
-    result.classItems = filterClassItems(this.classitems,  compiledQuery.classitems).slice(0,30);
+    result.files      = filter(this.get('files'),   data.files,   compiledQuery.files     ).slice(0,10);
+    result.modules    = filter(this.get('modules'), data.modules, compiledQuery.modules   ).slice(0,10);
+    result.classes    = filter(this.get('classes'), data.classes, compiledQuery.classes   ).slice(0,10);
+    result.classItems = filterClassItems(this.get('classitems'),  compiledQuery.classitems).slice(0,30);
 
     return result;
   },
