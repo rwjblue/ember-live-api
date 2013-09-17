@@ -1,4 +1,4 @@
-var ClassItemsComponent = Ember.Component.extend({
+var ClassItemsListingComponent = Ember.Component.extend({
   classitems: Em.required('must supply classitems'),
 
   type: function(){
@@ -22,4 +22,4 @@ var ClassItemsComponent = Ember.Component.extend({
   }.property('classitems')
 });
 
-export default ClassItemsComponent;
+export default ClassItemsListingComponent;

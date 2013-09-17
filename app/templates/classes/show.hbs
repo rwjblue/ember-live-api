@@ -38,17 +38,19 @@
 {{#if typesPresent}}
   <div class="tabs">
     <ul>
-      <li><a href="#index">Index</a></li>
+      <li><a {{action index}}>Index</a></li>
       {{#each type in types}}
         <li><a {{action type}}>{{type}}</a></li>
       {{/each}}
     </ul>
     <div class="pane" id="index">
       {{partial 'apiOptions'}}
-      {{class-items classitems=methods}}
-      {{class-items classitems=properties}}
-      {{class-items classitems=events}}
+      {{class-items-listing classitems=methods}}
+      {{class-items-listing classitems=properties}}
+      {{class-items-listing classitems=events}}
     </div>
+    {{#each type in types}}
+    {{/each}}
   </div>
 {{/if}}
 {{!

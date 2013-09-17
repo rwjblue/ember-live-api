@@ -1,4 +1,4 @@
-var ClassitemController = Ember.ObjectController.extend({
+var ClassitemListingController = Ember.ObjectController.extend({
   sanitize: function(url){
     return url.replace(/[^a-z0-9_-]+/i, '_');
   },
@@ -25,4 +25,4 @@ var ClassitemController = Ember.ObjectController.extend({
   }.property('content')
 });
 
-export default ClassitemController;
+export default ClassitemListingController;
