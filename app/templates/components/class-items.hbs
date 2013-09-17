@@ -1,0 +1,10 @@
+{{#if present}}
+<p><h2>{{typeTitle}}</h2></p>
+<ul class="index-list">
+  {{#each classitems itemController="classitem"}}
+  <li {{bind-attr class=classes}}>
+  <a {{bind-attr href=url}}>{{name}}</a>
+  </li>
+  {{/each}}
+</ul>
+{{/if}}

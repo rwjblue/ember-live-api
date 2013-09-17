@@ -1,4 +1,4 @@
-var MethodController = Ember.ObjectController.extend({
+var ClassitemController = Ember.ObjectController.extend({
   sanitize: function(url){
     return url.replace(/[^a-z0-9_-]+/i, '_');
   },
@@ -22,7 +22,7 @@ var MethodController = Ember.ObjectController.extend({
     if (method['inherited'])
       classes.push('inherited');
     
-  }.property('content'),
+  }.property('content')
 });
 
-export default MethodController;
+export default ClassitemController;

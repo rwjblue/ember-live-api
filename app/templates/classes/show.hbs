@@ -45,16 +45,9 @@
     </ul>
     <div class="pane" id="index">
       {{!<%= partial "api_options" %>}}
-      {{#if methodsPresent}}
-        <p><h2>Methods</h2></p>
-        <ul class="index-list">
-          {{#each methods itemController="method"}}
-            <li {{bind-attr class=classes}}>
-            <a {{bind-attr href=url}}>{{name}}</a>
-            </li>
-          {{/each}}
-        </ul>
-      {{/if}}
+      {{class-items classitems=methods}}
+      {{class-items classitems=properties}}
+      {{class-items classitems=events}}
     </div>
   </div>
 {{/if}}
