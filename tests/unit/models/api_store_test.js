@@ -78,6 +78,18 @@ asyncTest("it gets an ApiClass instance back from findClass", function(){
   });
 });
 
+asyncTest("sets the apiStore on the ApiClass", function(){
+  expect(3);
+
+  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
+    start();
+
+    ok(obj);
+    ok(obj.get('apiStore') instanceof ApiStore, 'apiStore is available to the object');
+    ok(obj.get('apiStore') === apiStore, 'the same apiStore instance is passed to the object');
+  });
+});
+
 module("Unit - ApiStore - Modules", {
   setup: function(){
     stop();

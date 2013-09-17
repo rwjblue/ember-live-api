@@ -34,6 +34,8 @@ var ApiClass = Ember.Object.extend({
   line:           Em.computed.alias('data.line'),
   description:    Em.computed.alias('data.description'),
   static:         Em.computed.alias('data.static'),
+  deprecated:     Em.computed.alias('data.deprecated'),
+  access:         Em.computed.alias('data.access'),
 
 
   filterClassitemsByType: function(type){
@@ -48,6 +50,10 @@ var ApiClass = Ember.Object.extend({
     return this.filterClassitemsByType('property');
   }.property('classitems'),
 
+
+  findClass: function(className){
+    return this.get('apiStore').findClass(className);
+  }
 });
 
 export default ApiClass;

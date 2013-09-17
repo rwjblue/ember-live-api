@@ -226,7 +226,7 @@ var ApiStore = Ember.Object.extend({
     return this.findItem('classes', className).then(function(klass){
       klass.classitems = self.get('classitems').filterBy('class',className);
 
-      return ApiClass.create({data: klass});
+      return ApiClass.create({data: klass, apiStore: self});
     });
   },
 
