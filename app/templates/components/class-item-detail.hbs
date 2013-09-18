@@ -1,124 +1,97 @@
 <div {{bind-attr id=itemId class=classes}}>
   <h3 {{bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{name}}</code></h3>
-</div>
+  {{#if paramsListing}}
+    <span class="args">({{paramsListing}})</span>
+  {{/if}}
 
+  {{#if returnType}}
+    <span class="type">{{api-class-link className=returnType}}</span>
+  {{/if}}
 
+  {{#if deprecated}}
+    <span class="flag deprecated">deprecated</span>
+  {{/if}}
 
+  {{#if access}}
+    <span {{bind-attr class=":flag access"}}>{{access}}</span>
+  {{/if}}
 
-{{!
-<% item_name_id= "#{type}_#{sanitize_class item['name']}" %>
-<div id="<%= item_name_id %>" class="<%= type %> <%= api_classes_for_item item %> item-entry">
-  <h3 data-id="<%= item_name_id %>" class="name anchorable-toc"><code><%= item['name'] %></code></h3>
-<% if item['params'] %>
-  <span class="args">
-    (<%= item['params'].map{|i| i['name']}.join(', ') %>)
-  </span>
-<% end %>
-
-<% if item['return'] %>
-  <span class="type"><%= api_class_link item['return']['type'] %></span>
-<% end %>
-
-<% if item['type'] %>
-  <span class="type"><%= api_class_link item['type'] %></span>
-<% end %>
-
-<% if item['deprecated'] %>
-  <%# TODO: Handle deprecation message %>
-  <span class="flag deprecated">deprecated</span>
-<% end %>
-
-<% if item['access'] %>
-  <span class="flag <%= item['access'] %>"><%= item['access'] %></span>
-<% end %>
-
-<% if item['final'] %>
-  <span class="flag final">constant</span>
-<% end %>
-
-<% if item['static'] %>
-  <span class="flag static">static</span>
-<% end %>
-
-<% if item['optional'] %>
-  <span class="flag optional">optional</span>
-<% end %>
-
-<% if item['required'] %>
-  <span class="flag required">required</span>
-<% end %>
+  {{#if final}} <span class="flag final">constant</span> {{/if}}
+  {{#if static}} <span class="flag static">static</span> {{/if}}
+  {{#if optional}} <span class="flag optional">optional</span> {{/if}}
+  {{#if required}} <span class="flag required">required</span> {{/if}}
 
   <div class="meta">
-      <% if item['overwritten_from'] %>
+    {{#if overwrittenFromClass}}
+      Inherited from
+      {{! TODO: Make direct method links work}}
+      {{api-class-link className=overwrittenFromClass}}
+      
+      {{#if file}}
+        but overwritten in
+      {{/if}}
+    {{else}}
+      {{#if extendedFrom}}
         Inherited from
-        <%= api_class_link item['overwritten_from']['class'], "method_#{item['overwritten_from']['name']}" %>
-        <% if item['file'] %>
-          but overwritten in
-        <% end %>
-      <% else %>
-        <% if item['extended_from'] %>
-          Inherited from
-          <%= api_class_link item['extended_from'], "method_#{item['name']}" %>
-        <% else %>
-          <% if item['file'] %>
-            Defined in
-          <% end %>
-        <% end %>
-      <% end %>
-      <%= api_file_link item %>
+        {{api-class-link className=extendedFrom}}
+      {{else}}
+        {{#if file}}
+          Defined in
+        {{/if}}
+      {{/if}}
+    {{/if}}
+    {{api-file-link apiItem=item}}
 
-    <%# TODO: Handle deprecation message %>
-
-    <% if item['since'] %>
-      <br/>Available since <%= item['since'] %>
-    <% end %>
+    {{! TODO: Handle deprecation message }}
+    {{#if since}}
+      <br/>Available since {{since}}
+    {{/if}}
   </div>
 
-  <% if item['description'] %>
+  {{#if description}}
     <div class="description">
-      <%= api_markdown item['description'] %>
+      {{api-markdown text=description}}
     </div>
-  <% end %>
+  {{/if}}
 
   <p>
-    <% if item['default'] %>
-      <strong>Default:</strong> <code><%= item['default'] %></code>
-    <% end %>
+    {{#if default}}
+      <strong>Default:</strong> <code>{{default}}</code>
+    {{/if}}
   </p>
 
-  <% if item['example'] %>
+  {{#if example}}
     <div class="example">
       <h4>Example:</h4>
 
       <div class="example-content">
-        <% item['example'].each do |example| %>
-          <%= api_markdown example %>
-        <% end %>
+        {{#each example}}
+          {{api-markdown text=example}}
+        {{/each}}
       </div>
     </div>
-  <% end %>
+  {{/if}}
 
-  <% if item['params'] %>
+  {{#if params}}
     <div class="params">
       <h3>Parameters:</h3>
 
       <dl>
-        <% item['params'].each do |param| %>
-          <dt><strong><%= param['name'] %></strong> <span class="type"><%= api_class_link param['type'] %></span></dt>
-          <dd><%= param['description'] %></dd>
-        <% end %>
+        {{#each params}}
+          <dt><strong>{{name}}</strong> <span class="type">{{api-class-link className=type}}</span></dt>
+          <dd>{{description}}</dd>
+        {{/each}}
       </dl>
     </div>
-  <% end %>
+  {{/if}}
 
-  <% if item['return'] %>
+  {{#if returnType}}
     <div class="return">
       <h3>Returns:</h3>
       <dl>
-        <dt><span class="type"><%= api_class_link item['return']['type'] %></span>
-        <dd> <%= item['return']['description'] %></dd>
+        <dt><span class="type">{{api-class-link className=returnType}}</span>
+        <dd>{{returnDescription}}</dd>
       </dl>
     </div>
-  <% end %>
+  {{/if}}
 </div>
-}}

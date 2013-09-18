@@ -13,6 +13,7 @@ var App = Ember.Application.create({
 
 App.register('api-store:main', ApiStore.create({dataUrl: '/api/api.json'}), {instantiate: false});
 App.inject('controller', 'apiStore', 'api-store:main');
+App.inject('component:api-class-link', 'apiStore', 'api-store:main');
 App.inject('route', 'apiStore', 'api-store:main');
 
 export default App;

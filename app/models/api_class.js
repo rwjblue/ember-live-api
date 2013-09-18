@@ -37,9 +37,20 @@ var ApiClass = Ember.Object.extend({
   deprecated:     Em.computed.alias('data.deprecated'),
   access:         Em.computed.alias('data.access'),
 
+  sortBy: ['name'],
 
   filterClassitemsByType: function(type){
-    return this.get('classitems').filterBy('itemtype',type);
+    var classitems = this.get('classitems').filterBy('itemtype',type);
+
+    return this.sortClassitemsByName(classitems);
+  },
+
+  sortClassitemsByName: function(classitems){
+    function sortByName(a, b) {
+        return a.name > b.name ? 1 : -1;
+    }
+
+    return classitems.sort(sortByName);
   },
 
   methods: function(){
