@@ -37,10 +37,16 @@
 {{#if typesPresent}}
   <div class="tabs">
     <ul>
-      <li><a {{action index}}>Index</a></li>
-      {{#each type in types}}
-        <li><a {{action type}}>{{type}}</a></li>
-      {{/each}}
+      <li>{{#link-to 'class.all' name}}Index{{/link-to}}</li>
+      {{#if methodsPresent}}
+        <li>{{#link-to 'class.methods' name}}Methods{{/link-to}}</li>
+      {{/if}}
+      {{#if propertiesPresent}}
+        <li>{{#link-to 'class.properties' name}}Properties{{/link-to}}</li>
+      {{/if}}
+      {{#if eventsPresent}}
+        <li>{{#link-to 'class.events' name}}Events{{/link-to}}</li>
+      {{/if}}
     </ul>
     {{#each type in types}}
     {{/each}}

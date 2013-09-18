@@ -4,22 +4,9 @@ var ClassController = Ember.ObjectController.extend({
   }.property('access'),
 
   typesPresent: function(){
-    return this.get('types').length > 0;
-  }.property('types'),
-
-  types: function(){
-    var availableTypes = [];
-
-    if (this.get('methodsPresent'))
-      availableTypes.push('Methods');
-
-    if (this.get('propertiesPresent'))
-      availableTypes.push('Properties');
-
-    if (this.get('eventsPresent'))
-      availableTypes.push('Events');
-
-    return availableTypes;
+    return this.get('methodsPresent') ||
+           this.get('propertiesPresent') ||
+           this.get('eventsPresent');
   }.property('methods', 'properties', 'events'),
 
   methodsPresent: function(){

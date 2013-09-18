@@ -3,6 +3,7 @@ var router = Ember.Router.map(function(){
     this.route('all');
     this.route('methods');
     this.route('properties');
+    this.route('events');
   });
 
   this.resource('modules', function() {
