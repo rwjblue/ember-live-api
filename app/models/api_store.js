@@ -214,9 +214,11 @@ var ApiStore = Ember.Object.extend({
   },
 
   findItem: function(type, name) {
-    var self = this;
-    return this.get('loading').then(function(){
-      return self.get('data')[type][name];
+    var self = this,
+        loadingPromise = this.get('loading');
+
+    return Ember.RSVP.all([loadingPromise]).then(function(){
+       return Ember.Object.create(self.get('data')[type][name]);
     });
   },
 
@@ -224,7 +226,9 @@ var ApiStore = Ember.Object.extend({
     var self = this;
 
     return this.findItem('classes', className).then(function(klass){
-      klass.classitems = self.get('classitems').filterBy('class',className);
+      var classitems = self.get('classitems').filterBy('class',className);
+
+      klass.set('classitems', classitems);
 
       return ApiClass.create({data: klass, apiStore: self});
     });
