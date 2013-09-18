@@ -2,13 +2,16 @@ var ApiMarkdown = Ember.Component.extend({
   tagName: 'span',
 
   markdown: function(){
-    var text = this.get('text'),
+    var self     = this,
+        text     = this.get('text'),
         markdown = marked(text);
+
+    Ember.run.scheduleOnce('afterRender', this, this.updateCodeBlocks);
 
     return new Ember.Handlebars.SafeString(markdown);
   }.property('text'),
 
-  didInsertElement: function(){
+  updateCodeBlocks: function(){
     var self = this;
 
     this.$('pre code').each(function(index, element) {
