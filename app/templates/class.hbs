@@ -1,4 +1,3 @@
-{{log model}}
 <h1 class="api-header">
   {{name}} {{#if static}}Namespace{{else}}Class{{/if}}
   {{api-file-link apiItem=this cssClass='edit-page'}}
@@ -43,16 +42,12 @@
         <li><a {{action type}}>{{type}}</a></li>
       {{/each}}
     </ul>
-    <div class="pane" id="index">
-      {{partial 'apiOptions'}}
-      {{class-items-listing classitems=methods}}
-      {{class-items-listing classitems=properties}}
-      {{class-items-listing classitems=events}}
-    </div>
     {{#each type in types}}
     {{/each}}
   </div>
 {{/if}}
+
+{{outlet}}
 {{!
   <% types.each do |type| %>
     <div class="pane" id="<%= type.pluralize %>">

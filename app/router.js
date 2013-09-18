@@ -1,6 +1,8 @@
 var router = Ember.Router.map(function(){
-  this.resource('classes', function() {
-    this.route('show', {path: '/:className'});
+  this.resource('class', {path: '/classes/:className'}, function() {
+    this.route('all');
+    this.route('methods');
+    this.route('properties');
   });
 
   this.resource('modules', function() {

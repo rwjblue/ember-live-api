@@ -1,4 +1,4 @@
-var ClassesShowController = Ember.ObjectController.extend({
+var ClassController = Ember.ObjectController.extend({
   accessUpcase: function(){
     return this.get('access').toUpperCase();
   }.property('access'),
@@ -35,4 +35,4 @@ var ClassesShowController = Ember.ObjectController.extend({
   }.property('events')
 });
 
-export default ClassesShowController;
+export default ClassController;
