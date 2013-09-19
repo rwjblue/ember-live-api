@@ -22,6 +22,7 @@
 */
 var ApiClass = Ember.Object.extend({
   name:           Em.computed.alias('data.name'),
+  className:      Em.computed.alias('name'),
   shortname:      Em.computed.alias('data.shortname'),
   classitems:     Em.computed.alias('data.classitems'),
   plugins:        Em.computed.alias('data.plugins'),

@@ -37,15 +37,15 @@
 {{#if typesPresent}}
   <div class="tabs">
     <ul>
-      <li {{bind-attr class="isAllRoute:active"}}>{{#link-to 'class.all' name}}Index{{/link-to}}</li>
+      <li {{bind-attr class="isAllRoute:active"}}>{{#link-to 'class.all' this}}Index{{/link-to}}</li>
       {{#if methodsPresent}}
-        <li {{bind-attr class="isMethodsRoute:active"}}>{{#link-to 'class.methods' name}}Methods{{/link-to}}</li>
+        <li {{bind-attr class="isMethodsRoute:active"}}>{{#link-to 'class.methods' this}}Methods{{/link-to}}</li>
       {{/if}}
       {{#if propertiesPresent}}
-        <li {{bind-attr class="isPropertiesRoute:active"}}>{{#link-to 'class.properties' name}}Properties{{/link-to}}</li>
+        <li {{bind-attr class="isPropertiesRoute:active"}}>{{#link-to 'class.properties' this}}Properties{{/link-to}}</li>
       {{/if}}
       {{#if eventsPresent}}
-        <li {{bind-attr class="isEventsRoute:active"}}>{{#link-to 'class.events' name}}Events{{/link-to}}</li>
+        <li {{bind-attr class="isEventsRoute:active"}}>{{#link-to 'class.events' this}}Events{{/link-to}}</li>
       {{/if}}
     </ul>
     {{#each type in types}}
