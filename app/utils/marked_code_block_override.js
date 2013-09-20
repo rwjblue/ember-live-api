@@ -42,7 +42,10 @@ function overrideMarkedCodeBlockFormatting(){
         var language = this.token.lang,
         code     = this.token.text;
 
-        code = hljs.highlight(language, code).value;
+        if (hljs.LANGUAGES[language]){
+          code = hljs.highlight(language, code).value;
+        }
+
         return formatCodeBlock(code, language);
       } else {
         return this.tokOriginal();
