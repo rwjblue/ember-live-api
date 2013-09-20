@@ -8,7 +8,7 @@ var ApiMarkdown = Ember.Component.extend({
     if (Parser.prototype.overridden !== true){
       Parser.prototype.tokOriginal = Parser.prototype.tok;
       Parser.prototype.tok = function(){
-        if (this.token.type == 'code'){
+        if (this.token.type === 'code'){
           var language = this.token.lang,
               code     = this.token.text;
 
@@ -30,7 +30,7 @@ var ApiMarkdown = Ember.Component.extend({
         markdown;
 
     this.overrideMarkedParser();
-    markdown = marked(text)
+    markdown = marked(text);
 
     return new Ember.Handlebars.SafeString(markdown);
   }.property('text'),
