@@ -35,7 +35,8 @@
     "click",
     "find",
     "marked",
-    "hljs"
+    "hljs",
+    "requirejs"
   ],
   "node" : false,
   "browser" : false,
