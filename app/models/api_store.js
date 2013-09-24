@@ -7,6 +7,7 @@
  */
 
 import ApiClass from 'appkit/models/api_class';
+import ajax from 'appkit/utils/ajax';
 
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
@@ -121,23 +122,6 @@ function parseQuery(query) {
   };
 
   return result;
-}
-
-function ajax(url, options) {
-  return new Ember.RSVP.Promise(function(resolve, reject){
-    options = options || {};
-    options.url = url;
-
-    options.success = function(data) {
-      Ember.run(null, resolve, data);
-    }
-
-    options.error = function(jqxhr, status, something) {
-      Ember.run(null, reject, arguments);
-    }
-
-    Ember.$.ajax(options);
-  });
 }
 
 var ApiStore = Ember.Object.extend({
