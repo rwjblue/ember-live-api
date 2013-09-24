@@ -1,20 +1,9 @@
 var SidebarController = Ember.ObjectController.extend({
-  query: null,
-  lastQuery: null,
-  isLoaded: Ember.computed.bool('apiStore.data'),
-
-  isSearching: function(){
-    var query = this.get('query');
-
-    if (query && query.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-
-  }.property('query').readOnly(),
-
-  content: Ember.computed.alias('apiStore').readOnly(),
+  query:        null,
+  lastQuery:    null,
+  isLoaded:     Em.computed.bool('apiStore.data'),
+  isSearching:  Em.computed.notEmpty('query').readOnly(),
+  content:      Em.computed.alias('apiStore').readOnly(),
 
   search: function(){
     var query     = this.get('query'),
