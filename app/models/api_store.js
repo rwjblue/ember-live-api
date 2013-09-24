@@ -135,7 +135,7 @@ var ApiStore = Ember.Object.extend({
 
     if (!data && url)
       data = ajax(url, { dataType: 'json' })
-                 .then(function(data){ self.calculateIndex(data); })
+                 .then(function(data){ self.calculateIndex(data); return data; })
                  .fail(Ember.RSVP.rethrow);
 
     this.set('data', data);
