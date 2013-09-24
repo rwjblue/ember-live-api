@@ -67,26 +67,34 @@ module("Unit - ApiStore - Classes", {
   }
 });
 
-asyncTest("it gets an ApiClass instance back from findClass", function(){
-  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
+asyncTest("it gets an ApiClass instance back from findClass", function() {
+  function testResult(obj) {
     start();
 
     ok(obj);
     ok(obj instanceof ApiClass);
     equal(obj.get('name'), 'Ember.ControllerMixin');
     equal(obj.get('module'), 'ember');
+  }
+
+  Ember.run(function() {
+    apiStore.findClass('Ember.ControllerMixin').then(testResult);
   });
 });
 
 asyncTest("sets the apiStore on the ApiClass", function(){
   expect(3);
 
-  apiStore.findClass('Ember.ControllerMixin').then(function(obj){
+  function testResult(obj) {
     start();
 
     ok(obj);
     ok(obj.get('apiStore') instanceof ApiStore, 'apiStore is available to the object');
     ok(obj.get('apiStore') === apiStore, 'the same apiStore instance is passed to the object');
+  }
+
+  Ember.run(function() {
+    apiStore.findClass('Ember.ControllerMixin').then(testResult);
   });
 });
 

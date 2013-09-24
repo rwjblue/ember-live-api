@@ -4,8 +4,7 @@ var ApiMarkdown = Ember.Component.extend({
   tagName: 'span',
 
   markdown: function(){
-    var self     = this,
-        text     = this.get('text'),
+    var text     = this.get('text'),
         markdown = marked(text);
 
     return new Ember.Handlebars.SafeString(markdown);

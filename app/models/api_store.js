@@ -123,6 +123,23 @@ function parseQuery(query) {
   return result;
 }
 
+function ajax(url, options) {
+  return new Ember.RSVP.Promise(function(resolve, reject){
+    options = options || {};
+    options.url = url;
+
+    options.success = function(data) {
+      Ember.run(null, resolve, data);
+    }
+
+    options.error = function(jqxhr, status, something) {
+      Ember.run(null, reject, arguments);
+    }
+
+    Ember.$.ajax(options);
+  });
+}
+
 var ApiStore = Ember.Object.extend({
   dataUrl: Ember.required(),
   isLoaded: false,
@@ -132,12 +149,14 @@ var ApiStore = Ember.Object.extend({
         url  = this.get('dataUrl'),
         promise;
 
-    promise = Ember.$.getJSON(url).then(function(data){
+    promise = ajax(url, {
+      dataType: 'json'
+    }).then(function(data){
       self.set('data', data);
       self.set('isLoaded', true);
 
       return data;
-    });
+    }).fail(Ember.RSVP.rethrow);
 
     this.set('loading', promise);
 
@@ -217,7 +236,7 @@ var ApiStore = Ember.Object.extend({
     var self = this,
         loadingPromise = this.get('loading');
 
-    return Ember.RSVP.all([loadingPromise]).then(function(){
+    return loadingPromise.then(function(){
        return Ember.Object.create(self.get('data')[type][name]);
     });
   },

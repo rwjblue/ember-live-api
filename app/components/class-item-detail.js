@@ -1,26 +1,28 @@
 import ItemUrlMixin from 'appkit/mixins/item_url';
 import ItemClassesMixin from 'appkit/mixins/item_classes';
 
+var alias = Ember.computed.alias;
+
 var ClassItemDetailComponent = Ember.Component.extend(ItemUrlMixin, ItemClassesMixin, {
-  content:               Em.computed.alias('item'),
-  type:                  Em.computed.alias('item.itemtype'),
-  name:                  Em.computed.alias('item.name'),
-  params:                Em.computed.alias('item.params'),
-  returnType:            Em.computed.alias('item.return.type'),
-  returnDescription:     Em.computed.alias('item.return.description'),
-  deprecated:            Em.computed.alias('item.deprecated'),
-  access:                Em.computed.alias('item.access'),
-  final:                 Em.computed.alias('item.final'),
-  static:                Em.computed.alias('item.static'),
-  optional:              Em.computed.alias('item.optional'),
-  required:              Em.computed.alias('item.required'),
-  overwrittenFromClass:  Em.computed.alias('item.overwritten_from.class'),
-  file:                  Em.computed.alias('item.file'),
-  extendedFrom:          Em.computed.alias('item.extended_from'),
-  since:                 Em.computed.alias('item.since'),
-  description:           Em.computed.alias('item.description'),
-  default:               Em.computed.alias('item.default'),
-  example:               Em.computed.alias('item.example'),
+  content:               alias('item'),
+  type:                  alias('item.itemtype'),
+  name:                  alias('item.name'),
+  params:                alias('item.params'),
+  returnType:            alias('item.return.type'),
+  returnDescription:     alias('item.return.description'),
+  deprecated:            alias('item.deprecated'),
+  access:                alias('item.access'),
+  final:                 alias('item.final'),
+  static:                alias('item.static'),
+  optional:              alias('item.optional'),
+  required:              alias('item.required'),
+  overwrittenFromClass:  alias('item.overwritten_from.class'),
+  file:                  alias('item.file'),
+  extendedFrom:          alias('item.extended_from'),
+  since:                 alias('item.since'),
+  description:           alias('item.description'),
+  default:               alias('item.default'),
+  example:               alias('item.example'),
 
   additionalItemClasses: 'item-entry',
 
