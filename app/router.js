@@ -1,4 +1,6 @@
-var router = Ember.Router.map(function(){
+var Router = Ember.Router.extend();
+
+Ember.Router.map(function(){
   this.resource('class', {path: '/classes/:className'}, function() {
     this.route('all');
     this.route('methods');
@@ -11,4 +13,4 @@ var router = Ember.Router.map(function(){
   });
 });
 
-export default router;
+export default Router;

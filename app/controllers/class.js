@@ -1,5 +1,10 @@
+var alias = Ember.computed.alias;
+var notEmpty = Ember.computed.notEmpty;
+
 var ClassController = Ember.ObjectController.extend({
   needs: ['application'],
+  application: alias('controllers.application'),
+  currentRouteName: alias('application.currentRouteName'),
 
   accessUpcase: function(){
     return this.get('access').toUpperCase();
@@ -11,21 +16,9 @@ var ClassController = Ember.ObjectController.extend({
            this.get('eventsPresent');
   }.property('methods', 'properties', 'events'),
 
-  methodsPresent: function(){
-    return this.get('methods').length > 0;
-  }.property('methods'),
-
-  propertiesPresent: function(){
-    return this.get('properties').length > 0;
-  }.property('properties'),
-
-  eventsPresent: function(){
-    return this.get('events').length > 0;
-  }.property('events'),
-
-  currentRouteName: function(){
-    return this.get('controllers.application.currentRouteName');
-  }.property('controllers.application.currentRouteName'),
+  methodsPresent: notEmpty('methods.[]'),
+  propertiesPresent: notEmpty('properties.[]'),
+  eventsPresent: notEmpty('events.[]'),
 
   isAllRoute: function(){
     return this.isActive('all');

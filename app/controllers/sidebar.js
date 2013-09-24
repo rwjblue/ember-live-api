@@ -1,29 +1,23 @@
 var SidebarController = Ember.ObjectController.extend({
   query: null,
-  timer: null,
   lastQuery: null,
-
-  isLoaded: function(){
-    return !!this.get('apiStore.data');
-  }.property('apiStore.data'),
+  isLoaded: Ember.computed.bool('apiStore.data'),
 
   isSearching: function(){
     var query = this.get('query');
 
-    if (query && query.length > 0) 
+    if (query && query.length > 0) {
       return true;
-    else
+    } else {
       return false;
+    }
 
-  }.property('query'),
+  }.property('query').readOnly(),
 
-  content: function(){
-    return this.get('apiStore');
-  }.property(),
+  content: Ember.computed.alias('apiStore').readOnly(),
 
   search: function(){
     var query     = this.get('query'),
-        timer     = this.get('timer'),
         lastQuery = this.get('lastQuery'),
         apiStore  = this.get('apiStore');
 
@@ -33,13 +27,10 @@ var SidebarController = Ember.ObjectController.extend({
       this.set('lastQuery', query);
     }
 
-    Ember.run.cancel(timer);
-
-    timer = Ember.run.later(this, function(){
+    Ember.run.debounce(this, function(){
       this.set('searchResults', apiStore.search(query));
     }, 50);
 
-    this.set('timer', timer);
   }.observes('query')
 });
 
