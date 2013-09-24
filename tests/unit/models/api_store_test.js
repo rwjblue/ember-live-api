@@ -54,18 +54,22 @@ test("it has classes", function(){
 });
 
 test("it has modules", function(){
-  ok(apiStore.get('modules'));
-});
-
-test("it has classitems", function(){
-  ok(apiStore.get('classitems'));
+  Ember.run(function(){
+    ok(apiStore.get('modules'));
+  });
 });
 
 test("it has namespaces", function(){
-  var namespaces = apiStore.get('namespaces');
+  function assertions(namespaces){
+    ok(namespaces);
+    ok(namespaces.length > 0, 'find at least 1 namespace');
+  }
 
-  ok(namespaces);
-  ok(namespaces.length > 0, 'find at least 1 namespace');
+  Ember.run(function(){
+    apiStore.get('namespaces')
+            .then(assertions)
+            .fail(Ember.RSVP.rethrow)
+  });
 });
 
 module("Unit - ApiStore - Classes", {
