@@ -131,58 +131,50 @@ var ApiStore = Ember.Object.extend({
   init: function(){
     var self = this,
         url  = this.get('dataUrl'),
-        promise;
+        data = this.get('data');
 
-    promise = ajax(url, {
-      dataType: 'json'
-    }).then(function(data){
-      self.set('data', data);
-      self.set('isLoaded', true);
+    if (!data && url)
+      data = ajax(url, { dataType: 'json' })
+                 .fail(Ember.RSVP.rethrow);
 
-      return data;
-    }).fail(Ember.RSVP.rethrow);
-
-    this.set('loading', promise);
-
-    return promise;
+    this.set('data', data);
   },
 
   getKeys: function(type){
     var data = this.get('data');
 
-    return Object.keys(data[type]);
+    return data.then(function(data){ return Object.keys(data[type]).sort(); });
   },
 
   getValues: function(type){
     var keys = this.getKeys(type),
         data = this.get('data');
 
-    return keys.map(function(item){
-      return data[type][item];
+    return Ember.RSVP.hash({data: data, keys: keys}).then(function(results){
+      return results.keys.map(function(item){
+        return results.data[type][item];
+      });
     });
   },
 
-  classitems: function(){
-    return this.get('data')['classitems'];
-  }.property('data'),
-
-
   files: function(){
-    return this.getKeys('files').sort();
+    return this.getKeys('files');
   }.property('data'),
 
   classes: function(){
     var classes = this.getValues('classes');
 
-    classes = classes.filter(function(item){
-      return item.static === undefined;
-    });
+    return classes.then(function(classes){
+      classes = classes.filter(function(item){
+        return item.static === undefined;
+      });
 
-    return classes.mapBy('name').sort();
+      return classes.mapBy('name').sort();
+    });
   }.property('data'),
 
   modules: function(){
-    return this.getKeys('modules').sort();
+    return this.getKeys('modules');
   }.property('data'),
 
   namespaces: function(){
@@ -218,22 +210,24 @@ var ApiStore = Ember.Object.extend({
 
   findItem: function(type, name) {
     var self = this,
-        loadingPromise = this.get('loading');
+        data = this.get('data');
 
-    return loadingPromise.then(function(){
-       return Ember.Object.create(self.get('data')[type][name]);
+    return data.then(function(data){
+       return Ember.Object.create(data[type][name]);
     });
   },
 
   findClass: function(className){
-    var self = this;
+    var self  = this,
+        data  = this.get('data'),
+        klass = this.findItem('classes', className);
 
-    return this.findItem('classes', className).then(function(klass){
-      var classitems = self.get('classitems').filterBy('class',className);
+    return Ember.RSVP.all([data, klass]).then(function(data, object){
+      var classitems = data['classitems'].filterBy('class', className);
 
-      klass.set('classitems', classitems);
+      object.set('classitems', classitems);
 
-      return ApiClass.create({data: klass, apiStore: self});
+      return ApiClass.create({data: object, apiStore: self});
     });
   },
 

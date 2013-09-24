@@ -1,19 +1,31 @@
 import ApiStore from 'appkit/models/api_store';
 import ApiClass from 'appkit/models/api_class';
+import ajax from 'appkit/utils/ajax';
 
 var sampleDataUrl = '/tests/support/api.json',
     apiStore;
 
-function createApiStore(callback){
-  apiStore = ApiStore.create({ dataUrl: sampleDataUrl});
-  if (callback)
-    apiStore.get('loading').then(callback);
+function createApiStore(data){
+  apiStore = ApiStore.create({ data: Ember.RSVP.resolve(data)});
+}
+
+function mainSetup(callback){
+  stop();
+
+  if (!callback)
+    callback = function(){};
+
+  Ember.run(function(){
+    ajax(sampleDataUrl, { dataType: 'json' })
+         .then(createApiStore)
+         .then(callback)
+         .fail(Ember.RSVP.rethrow);
+  });
 }
 
 module("Unit - ApiStore - Data/Index", {
   setup: function(){
-    stop();
-    createApiStore(start);
+    mainSetup(start);
   }
 });
 
@@ -22,27 +34,23 @@ test("it exists", function(){
   ok(apiStore instanceof ApiStore);
 });
 
-asyncTest("it has the right data", function(){
-  expect(1);
-  var sampleData;
-
-  Ember.$.getJSON(sampleDataUrl, function(data){
-    sampleData = data;
-  }).then(function(){
-    start();
-    deepEqual(apiStore.get('data'), sampleData);
+test("it has files", function(){
+  Ember.run(function(){
+    ok(apiStore.get('files'));
   });
 });
 
-test("it has files", function(){
-  ok(apiStore.get('files'));
-});
-
 test("it has classes", function(){
-  var classes = apiStore.get('classes');
+  function assertions(classes){
+    ok(classes);
+    ok(classes.length > 0, 'find at least 1 class');
+  }
 
-  ok(classes);
-  ok(classes.length > 0, 'find at least 1 class');
+  Ember.run(function(){
+    apiStore.get('classes')
+            .then(assertions)
+            .fail(Ember.RSVP.rethrow);
+  });
 });
 
 test("it has modules", function(){
@@ -62,8 +70,7 @@ test("it has namespaces", function(){
 
 module("Unit - ApiStore - Classes", {
   setup: function(){
-    stop();
-    createApiStore(start);
+    mainSetup(start);
   }
 });
 
@@ -100,8 +107,7 @@ asyncTest("sets the apiStore on the ApiClass", function(){
 
 module("Unit - ApiStore - Modules", {
   setup: function(){
-    stop();
-    createApiStore(start);
+    mainSetup(start);
   }
 });
 
@@ -118,8 +124,7 @@ asyncTest("it can access a module", function(){
 
 module("Unit - ApiStore - Namespaces", {
   setup: function(){
-    stop();
-    createApiStore(start);
+    mainSetup(start);
   }
 });
 
@@ -135,8 +140,7 @@ asyncTest("it can access a namespace", function(){
 
 module("Unit - ApiStore - Search", {
   setup: function(){
-    stop();
-    createApiStore(start);
+    mainSetup(start);
   }
 });
 
