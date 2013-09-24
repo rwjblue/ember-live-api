@@ -188,7 +188,7 @@ var ApiStore = Ember.Object.extend({
   }.property('data'),
 
   search: function(query) {
-    var parsedQuery, compiledQuery, result, data, index;
+    var parsedQuery, compiledQuery, result, index, promises;
 
     result = {};
 
@@ -197,15 +197,22 @@ var ApiStore = Ember.Object.extend({
     parsedQuery = parseQuery(query);
     compiledQuery = compileParsedQuery(parsedQuery);
 
-    data = this.get('data');
+    promises = { data:     this.get('data'),
+                 files:    this.get('files'),
+                 modules:  this.get('modules'),
+                 classes:  this.get('classes')};
 
-    // TODO: merge the results
-    result.files      = filter(this.get('files'),   data.files,   compiledQuery.files     ).slice(0,10);
-    result.modules    = filter(this.get('modules'), data.modules, compiledQuery.modules   ).slice(0,10);
-    result.classes    = filter(this.get('classes'), data.classes, compiledQuery.classes   ).slice(0,10);
-    result.classItems = filterClassItems(this.get('classitems'),  compiledQuery.classitems).slice(0,30);
+    return Ember.RSVP.hash(promises).then(function(results){
+      var classitems = results.data['classitems'];
 
-    return result;
+      // TODO: merge the results
+      result.files      = filter(results.files,   results.data.files,   compiledQuery.files     ).slice(0,10);
+      result.modules    = filter(results.modules, results.data.modules, compiledQuery.modules   ).slice(0,10);
+      result.classes    = filter(results.classes, results.data.classes, compiledQuery.classes   ).slice(0,10);
+      result.classItems = filterClassItems(classitems,  compiledQuery.classitems).slice(0,30);
+
+      return result;
+    });
   },
 
   findItem: function(type, name) {
@@ -219,15 +226,15 @@ var ApiStore = Ember.Object.extend({
 
   findClass: function(className){
     var self  = this,
-        data  = this.get('data'),
-        klass = this.findItem('classes', className);
+        promises = {data: this.get('data'),
+                    object: this.findItem('classes', className)};
 
-    return Ember.RSVP.all([data, klass]).then(function(data, object){
-      var classitems = data['classitems'].filterBy('class', className);
+    return Ember.RSVP.hash(promises).then(function(results){
+      var classitems = results.data['classitems'].filterBy('class', className);
 
-      object.set('classitems', classitems);
+      results.object.set('classitems', classitems);
 
-      return ApiClass.create({data: object, apiStore: self});
+      return ApiClass.create({data: results.object, apiStore: self});
     });
   },
 

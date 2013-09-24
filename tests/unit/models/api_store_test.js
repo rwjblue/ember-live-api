@@ -68,7 +68,7 @@ test("it has namespaces", function(){
   Ember.run(function(){
     apiStore.get('namespaces')
             .then(assertions)
-            .fail(Ember.RSVP.rethrow)
+            .fail(Ember.RSVP.rethrow);
   });
 });
 
@@ -78,10 +78,10 @@ module("Unit - ApiStore - Classes", {
   }
 });
 
-asyncTest("it gets an ApiClass instance back from findClass", function() {
-  function testResult(obj) {
-    start();
+test("it gets an ApiClass instance back from findClass", function() {
+  expect(4);
 
+  function testResult(obj) {
     ok(obj);
     ok(obj instanceof ApiClass);
     equal(obj.get('name'), 'Ember.ControllerMixin');
@@ -89,23 +89,23 @@ asyncTest("it gets an ApiClass instance back from findClass", function() {
   }
 
   Ember.run(function() {
-    apiStore.findClass('Ember.ControllerMixin').then(testResult);
+    apiStore.findClass('Ember.ControllerMixin')
+            .then(testResult)
+            .fail(Ember.RSVP.rethrow);
   });
 });
 
-asyncTest("sets the apiStore on the ApiClass", function(){
+test("sets the apiStore on the ApiClass", function(){
   expect(3);
 
-  function testResult(obj) {
-    start();
-
+  function assertions(obj) {
     ok(obj);
     ok(obj.get('apiStore') instanceof ApiStore, 'apiStore is available to the object');
     ok(obj.get('apiStore') === apiStore, 'the same apiStore instance is passed to the object');
   }
 
   Ember.run(function() {
-    apiStore.findClass('Ember.ControllerMixin').then(testResult);
+    apiStore.findClass('Ember.ControllerMixin').then(assertions);
   });
 });
 
@@ -115,14 +115,16 @@ module("Unit - ApiStore - Modules", {
   }
 });
 
-asyncTest("it can access a module", function(){
-  apiStore.findModule('ember').then(function(obj){
-    start();
-
+test("it can access a module", function(){
+  function assertions(obj) {
     ok(obj);
     equal(obj.name, 'ember');
     ok(obj.submodules);
     ok(obj.classes);
+  }
+
+  Ember.run(function(){
+    apiStore.findModule('ember').then(assertions);
   });
 });
 
@@ -132,13 +134,17 @@ module("Unit - ApiStore - Namespaces", {
   }
 });
 
-asyncTest("it can access a namespace", function(){
-  apiStore.findNamespace('Ember').then(function(obj){
-    start();
+test("it can access a namespace", function(){
+  expect(3);
 
+  function assertions(obj){
     ok(obj);
     ok(obj.get('static'), 'its a namespace');
     equal(obj.get('name'), 'Ember');
+  }
+
+  Ember.run(function(){
+    apiStore.findNamespace('Ember').then(assertions);
   });
 });
 
@@ -151,22 +157,55 @@ module("Unit - ApiStore - Search", {
 test('search returns a valid search result object', function(){
   expect(5);
 
-  var results = apiStore.search('ember');
+  function assertions(results){
+    ok(results);
+    ok(results.files);
+    ok(results.modules);
+    ok(results.classes);
+    ok(results.classItems);
+  }
 
-  ok(results);
-  ok(results.files);
-  ok(results.modules);
-  ok(results.classes);
-  ok(results.classItems);
+  Ember.run(function(){
+    apiStore.search('ember').then(assertions);
+  });
 });
 
-test('can actually search for something', function(){
-  expect(4);
+test('can actually search for classitems', function(){
+  expect(1);
 
-  var results = apiStore.search('dd');
+  function assertions(results){
+    ok(results.classItems.length > 0, 'some classItems were returned');
+  }
 
-  ok(results.files.length > 0, 'some files were returned');
-  ok(results.modules.length > 0, 'some modules were returned');
-  ok(results.classes.length > 0, 'some classes were returned');
-  ok(results.classItems.length > 0, 'some classItems were returned');
+  Ember.run(function(){
+    apiStore.search('dd').then(assertions)
+                         .fail(Ember.RSVP.rethrow);
+  });
+});
+
+test('can actually search for classes', function(){
+  expect(1);
+
+  function assertions(results){
+    ok(results.classes.length > 0, 'some classes were returned');
+  }
+
+  Ember.run(function(){
+    apiStore.search('Ember').then(assertions)
+                         .fail(Ember.RSVP.rethrow);
+  });
+});
+
+test('can actually search for modules', function(){
+  expect(1);
+
+  function assertions(results){
+    ok(results.modules.length > 0, 'some modules were returned');
+  }
+
+  Ember.run(function(){
+    apiStore.search('::Emb')
+            .then(assertions)
+            .fail(Ember.RSVP.rethrow);
+  });
 });
