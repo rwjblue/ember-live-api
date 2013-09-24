@@ -41,16 +41,10 @@ test("it has files", function(){
 });
 
 test("it has classes", function(){
-  function assertions(classes){
-    ok(classes);
-    ok(classes.length > 0, 'find at least 1 class');
-  }
+  var classes = apiStore.get('classes');
 
-  Ember.run(function(){
-    apiStore.get('classes')
-            .then(assertions)
-            .fail(Ember.RSVP.rethrow);
-  });
+  ok(classes);
+  ok(classes.length > 0, 'find at least 1 class');
 });
 
 test("it has modules", function(){

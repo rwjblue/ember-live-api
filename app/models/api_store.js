@@ -135,57 +135,25 @@ var ApiStore = Ember.Object.extend({
 
     if (!data && url)
       data = ajax(url, { dataType: 'json' })
+                 .then(function(data){ self.calculateIndex(data); })
                  .fail(Ember.RSVP.rethrow);
 
     this.set('data', data);
   },
 
-  getKeys: function(type){
-    var data = this.get('data');
+  calculateIndex: function(data){
+    var classes = this.getKeys(data, 'classes');
 
-    return data.then(function(data){ return Object.keys(data[type]).sort(); });
+    this.set('modules', this.getKeys(data, 'modules'));
+    this.set('files', this.getKeys(data, 'files'));
+
+    this.set('classes', classes.filter(function(item){ return item.static === undefined; }));
+    this.set('namespaces', classes.filter(function(item){ return item.static !== undefined; }));
   },
 
-  getValues: function(type){
-    var keys = this.getKeys(type),
-        data = this.get('data');
-
-    return Ember.RSVP.hash({data: data, keys: keys}).then(function(results){
-      return results.keys.map(function(item){
-        return results.data[type][item];
-      });
-    });
+  getKeys: function(data, type){
+    return Object.keys(data[type]).sort();
   },
-
-  files: function(){
-    return this.getKeys('files');
-  }.property('data'),
-
-  _classes: function(namespace){
-    var classes = this.getValues('classes');
-
-    return classes.then(function(classes){
-      classes = classes.filter(function(item){
-        if (namespace)
-          return item.static !== undefined;
-        else
-          return item.static === undefined;
-      });
-
-      return classes.mapBy('name').sort();
-    });
-  },
-  classes: function(){
-    return this._classes(false);
-  }.property('data'),
-
-  modules: function(){
-    return this.getKeys('modules');
-  }.property('data'),
-
-  namespaces: function(){
-    return this._classes(true);
-  }.property('data'),
 
   search: function(query) {
     var parsedQuery, compiledQuery, result, index, promises;
