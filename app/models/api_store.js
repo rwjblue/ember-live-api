@@ -135,20 +135,32 @@ var ApiStore = Ember.Object.extend({
 
     if (!data && url)
       data = ajax(url, { dataType: 'json' })
-                 .then(function(data){ self.calculateIndex(data); return data; })
-                 .fail(Ember.RSVP.rethrow);
+
+    data.then(function(data){ self.calculateIndex(data); return data; })
+        .fail(Ember.RSVP.rethrow);
 
     this.set('data', data);
   },
 
   calculateIndex: function(data){
-    var classes = this.getKeys(data, 'classes');
+    var classes = [],
+        namespaces = [],
+        classNames = this.getKeys(data, 'classes');
 
+    this.set('files',   this.getKeys(data, 'files'));
     this.set('modules', this.getKeys(data, 'modules'));
-    this.set('files', this.getKeys(data, 'files'));
 
-    this.set('classes', classes.filter(function(item){ return item.static === undefined; }));
-    this.set('namespaces', classes.filter(function(item){ return item.static !== undefined; }));
+    classNames.forEach(function(name){
+      var item = data['classes'][name];
+
+      if (item.static === undefined)
+        classes.pushObject(name);
+      else
+        namespaces.pushObject(name);
+    });
+
+    this.set('classes', classes);
+    this.set('namespaces', namespaces);
   },
 
   getKeys: function(data, type){

@@ -35,9 +35,7 @@ test("it exists", function(){
 });
 
 test("it has files", function(){
-  Ember.run(function(){
-    ok(apiStore.get('files'));
-  });
+  ok(apiStore.get('files'));
 });
 
 test("it has classes", function(){
@@ -54,16 +52,10 @@ test("it has modules", function(){
 });
 
 test("it has namespaces", function(){
-  function assertions(namespaces){
-    ok(namespaces);
-    ok(namespaces.length > 0, 'find at least 1 namespace');
-  }
+  var namespaces = apiStore.get('namespaces');
 
-  Ember.run(function(){
-    apiStore.get('namespaces')
-            .then(assertions)
-            .fail(Ember.RSVP.rethrow);
-  });
+  ok(namespaces);
+  ok(namespaces.length > 0, 'find at least 1 namespace');
 });
 
 module("Unit - ApiStore - Classes", {
