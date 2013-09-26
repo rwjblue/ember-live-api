@@ -140,6 +140,18 @@ module("Unit - ApiStore - Search", {
   }
 });
 
+test('search sets searchResults upon fulfillment', function(){
+  expect(1);
+
+  function assertions(results){
+    deepEqual(results, apiStore.get('searchResults'));
+  }
+
+  Ember.run(function(){
+    apiStore.search('Ember').then(assertions);
+  });
+});
+
 test('search returns a valid search result object', function(){
   expect(5);
 
