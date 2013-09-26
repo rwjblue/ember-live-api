@@ -1,6 +1,6 @@
 var Router = Ember.Router.extend();
 
-Ember.Router.map(function(){
+Router.map(function(){
   this.resource('class', {path: '/classes/:className'}, function() {
     this.route('all');
     this.route('methods');
