@@ -2,8 +2,13 @@ import ApiStore from 'appkit/models/api_store';
 import ApiClass from 'appkit/models/api_class';
 import ajax from 'appkit/utils/ajax';
 
-var sampleDataUrl = '/tests/support/api.json',
+var sampleDataUrl = '',
     apiStore;
+
+if (typeof __karma__ !== 'undefined')
+  sampleDataUrl = '/base';
+
+sampleDataUrl = sampleDataUrl + '/tests/support/api.json';
 
 function createApiStore(data){
   apiStore = ApiStore.create({ data: Ember.RSVP.resolve(data)});
@@ -14,6 +19,7 @@ function mainSetup(callback){
 
   if (!callback)
     callback = function(){};
+
 
   Ember.run(function(){
     ajax(sampleDataUrl, { dataType: 'json' })

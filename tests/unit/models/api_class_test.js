@@ -1,14 +1,17 @@
 import ApiClass from 'appkit/models/api_class';
 
-var sampleDataUrl = '/tests/support/api.json',
-    sampleClass = 'Ember.ControllerMixin',
-    sampleData, apiStore, apiClass;
+var sampleClass = 'Ember.ControllerMixin',
+    sampleDataUrl = '', 
+    apiStore, apiClass;
+
+if (typeof __karma__ !== 'undefined')
+  sampleDataUrl = '/base';
+
+sampleDataUrl = sampleDataUrl + '/tests/support/api.json';
 
 module("Unit - ApiClass", {
   setup: function(){
     stop();
-
-    var sampleData;
 
     Ember.$.getJSON(sampleDataUrl)
     .then(function(data){
@@ -17,7 +20,6 @@ module("Unit - ApiClass", {
       classinfo.classitems = data['classitems'].filterBy('class',sampleClass);
       
       apiClass   = ApiClass.create({data: classinfo});
-      sampleData = data;
       return true;
     })
     .then(start);
