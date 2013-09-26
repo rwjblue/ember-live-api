@@ -76,6 +76,11 @@ define("resolver",
     // supports components with dashes and other stuff with underscores.
     var normalizedModuleName = chooseModuleName(requirejs._eak_seen, moduleName);
 
+    if (parsedName.fullName === 'router:main') {
+      // for now, lets keep the router at app/router.js
+      return require(prefix + '/router');
+    }
+
     if (requirejs._eak_seen[normalizedModuleName]) {
       var module = require(normalizedModuleName, null, null, true /* force sync */);
 
@@ -96,14 +101,10 @@ define("resolver",
     }
   }
 
-  function resolveTemplate(parsedName) {
-    return Ember.TEMPLATES[parsedName.name] || Ember.TEMPLATES[Ember.String.underscore(parsedName.name)];
-  }
-
   // Ember.DefaultResolver docs:
   //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({
-    resolveTemplate: resolveTemplate,
+    resolveTemplate: resolveOther,
     resolveOther: resolveOther,
     parseName: parseName,
     normalize: function(fullName) {
