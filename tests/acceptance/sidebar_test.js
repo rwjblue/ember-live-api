@@ -1,6 +1,6 @@
 var App;
 
-module("Acceptances - Index", {
+module("Acceptances - Sidebar", {
   setup: function(){
     var sampleDataUrl = '';
 
