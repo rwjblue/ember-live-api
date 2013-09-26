@@ -17,7 +17,7 @@ var SidebarController = Ember.ObjectController.extend({
     }
 
     Ember.run.debounce(this, function(){
-      this.set('searchResults', apiStore.search(query));
+      apiStore.search(query);
     }, 50);
 
   }.observes('query')
