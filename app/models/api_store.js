@@ -168,7 +168,8 @@ var ApiStore = Ember.Object.extend({
   },
 
   search: function(query) {
-    var parsedQuery, compiledQuery, result, index, promises;
+    var self = this,
+        parsedQuery, compiledQuery, result, index, promises;
 
     result = {};
 
@@ -190,6 +191,8 @@ var ApiStore = Ember.Object.extend({
       result.modules    = filter(results.modules, results.data.modules, compiledQuery.modules   ).slice(0,10);
       result.classes    = filter(results.classes, results.data.classes, compiledQuery.classes   ).slice(0,10);
       result.classItems = filterClassItems(classitems,  compiledQuery.classitems).slice(0,30);
+
+      self.set('searchResults', result);
 
       return result;
     });
