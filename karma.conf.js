@@ -9,11 +9,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'vendor/marked/lib/marked.js',
       'vendor/almond.js',
       'vendor/resolver.js',
       'vendor/jquery/jquery.js',
       'vendor/handlebars/handlebars.js',
       'vendor/ember/index.js',
+      'vendor/highlightjs/highlight.pack.js',
       'assets/templates.js',
       'assets/app.js',
       'tests/tests.js',
