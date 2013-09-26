@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rjackson/ember-live-api.png?branch=master)](https://travis-ci.org/rjackson/ember-live-api)
+
 ## Ember Live API
 
 This project aims to replicate the functionality of the emberjs.com/api/ site (which is statically generated), with an Ember application that uses the 
