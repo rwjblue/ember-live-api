@@ -1,14 +1,16 @@
 <ul>
   {{#each searchResults.classes}}
-  <li>{{name}}</li>
+  <li>{{#link-to 'class.all' name}}{{name}}{{/link-to}}</li>
   {{/each}}
   {{#each searchResults.files}}
-  <li>{{name}}</li>
+  {{log this}}
+  <li>{{#link-to 'class.all' class}}{{name}}{{/link-to}}</li>
   {{/each}}
   {{#each searchResults.modules}}
-  <li>{{name}}</li>
+  {{!TODO: need module linkable path}}
+  <li>{{#link-to 'class.all' class}}{{name}}{{/link-to}}</li>
   {{/each}}
   {{#each searchResults.classItems}}
-  <li>{{name}}{{file}}:{{line}}{{type}}</li>
+  <li>{{#link-to 'class.all' class}}{{itemtype}}: {{class}}#{{name}}{{/link-to}}</li>
   {{/each}}
 </ul>
