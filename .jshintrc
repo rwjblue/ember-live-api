@@ -8,7 +8,9 @@
     "Em",
     "$",
     "marked",
-    "hljs"
+    "hljs",
+    "requirejs",
+    "require"
   ],
   "node" : false,
   "browser" : false,
