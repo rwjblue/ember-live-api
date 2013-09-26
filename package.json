@@ -1,5 +1,5 @@
 {
-  "name": "app-kit",
+  "name": "ember-live-api",
   "namespace": "appkit",
   "version": "0.0.0",
   "main": "index.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/stefanpenner/app-kit.git"
+    "url": "git://github.com/rjackson/ember-live-api.git"
   },
   "author": "",
   "license": "BSD",
