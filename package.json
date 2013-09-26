@@ -43,7 +43,8 @@
     "grunt-dom-munger": "~2.0.1",
     "grunt-concat-css": "~0.1.0",
     "bower": "~1.2.6",
-    "grunt-contrib-compass": "~0.5.0"
+    "grunt-contrib-compass": "~0.5.0",
+    "grunt-s3": "~0.2.0-alpha.3"
   },
   "dependencies": {
     "loom": "~2.0.0",

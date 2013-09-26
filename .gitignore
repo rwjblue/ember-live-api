@@ -12,3 +12,5 @@
 /connect.lock
 /libpeerconnection.log
 .DS_Store
+
+.env
