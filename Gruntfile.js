@@ -25,47 +25,84 @@ module.exports = function(grunt) {
   //   `npm install --save-dev grunt-emblem`
   //   `bower install emblem.js --save`
   //
+  // * for LiveReload, `npm install --save-dev connect-livereload`
+  //
   // If you use SASS, LESS or Stylus, don't forget to delete
   // `public/assets/app.css` and create `app/styles/app.scss` instead.
 
   var Helpers = require('./tasks/helpers'),
-      config = Helpers.defaultConfig,
-      whenAvailable = Helpers.whenTaskIsAvailable,
+      config = Helpers.config,
+      filterAvailable = Helpers.filterAvailableTasks,
       _ = grunt.util._;
 
   config = _.extend(config, Helpers.loadConfig('./tasks/options/'));
-  grunt.initConfig(config);
 
   require('load-grunt-tasks')(grunt);
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', "Build (in debug mode) & test your application.", ['test']);
-  grunt.registerTask('build', _.compact([
+
+  config.concurrent = {
+    dist: [
+      "build:templates:dist",
+      "build:scripts",
+      "build:styles",
+      "build:other"
+    ],
+    debug: [
+      "build:templates:debug",
+      "build:scripts",
+      "build:styles",
+      "build:other"
+    ]
+  };
+
+  // All tasks except build:before and build:after are run concurrently
+  grunt.registerTask('build:before:dist', [
                      'clean:build',
-                     'lock',
-                     whenAvailable('coffee'),
+                     'clean:release',
+                     'copy:stage',
+                     'lock'
+                     ]);
+
+  grunt.registerTask('build:before:debug', [
+                     'clean:build',
+                     'copy:stage',
+                     'lock'
+                     ]);
+
+  grunt.registerTask('build:templates:dist', filterAvailable([
+                     'emblem:compile',
+                     'emberTemplates:dist'
+                     ]));
+
+  grunt.registerTask('build:templates:debug', filterAvailable([
+                     'emblem:compile',
+                     'emberTemplates:debug'
+                     ]));
+
+  grunt.registerTask('build:scripts', filterAvailable([
+                     'coffee',
                      'copy:prepare',
                      'transpile',
                      'jshint',
-                     'copy:stage',
-                     whenAvailable('emblem:compile'),
-                     whenAvailable('compass:compile'),
-                     whenAvailable('sass:compile'),
-                     whenAvailable('less:compile'),
-                     whenAvailable('stylus:compile'),
-                     'concat_css',
-                     'concat_sourcemap',
-                     'unlock' ]));
+                     'concat_sourcemap'
+                     ]));
 
-  grunt.registerTask('build:debug', "Build a development-friendly version of your app.", _.compact([
-                     'build',
-                     whenAvailable('emberTemplates:debug'),
-                     'copy:vendor' ]));
+  grunt.registerTask('build:styles', filterAvailable([
+                     'compass:compile',
+                     'sass:compile',
+                     'less:compile',
+                     'stylus:compile',
+                     'cssmin'
+                     ]));
 
-  grunt.registerTask('build:dist', "Build a minified & production-ready version of your app.", _.compact([
-                     'build',
-                     'clean:release',
-                     whenAvailable('emberTemplates:dist'),
+  grunt.registerTask('build:other', filterAvailable([
+                     'copy:vendor'
+                     ]));
+
+  grunt.registerTask('build:after:dist', filterAvailable([
+                     'unlock',
                      'dom_munger:distEmber',
                      'dom_munger:distHandlebars',
                      'useminPrepare',
@@ -73,7 +110,24 @@ module.exports = function(grunt) {
                      'uglify',
                      'copy:dist',
                      'rev',
-                     'usemin' ]));
+                     'usemin'
+                     ]));
+
+  grunt.registerTask('build:after:debug', filterAvailable([
+                     'unlock'
+                     ]));
+
+  grunt.registerTask('build:dist', "Build a minified & production-ready version of your app.", [
+                     'build:before:dist',
+                     'concurrent:dist',
+                     'build:after:dist'
+                     ]);
+
+  grunt.registerTask('build:debug', "Build a development-friendly version of your app.", [
+                     'build:before:debug',
+                     'concurrent:debug',
+                     'build:after:debug'
+                     ]);
 
   grunt.registerTask('test', "Run your apps's tests once. Uses Google Chrome by default. Logs coverage output to tmp/public/coverage.", [
                      'build:debug', 'karma:test' ]);
@@ -95,4 +149,5 @@ module.exports = function(grunt) {
   grunt.registerTask('deploy', "Generate assets with build:dist and deploy to S3.", [
                      'build:dist',
                      's3' ]);
+  grunt.initConfig(config);
 };

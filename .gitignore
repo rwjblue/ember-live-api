@@ -6,6 +6,9 @@
 
 # dependencies
 /node_modules
+/vendor/*
+!/vendor/almond.js
+!/vendor/resolver.js
 
 # misc
 /.sass-cache
