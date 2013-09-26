@@ -20,7 +20,6 @@ test("sidebar renders list of modules/classes", function(){
   expect(2);
 
   visit('/').then(function(){
-    debugger;
     ok(exists("a:contains('Ember.Application')"));
     ok(exists("a:contains('Ember.run')"));
   });
