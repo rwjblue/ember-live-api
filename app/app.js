@@ -14,7 +14,7 @@ var App = Ember.Application.extend({
 App.initializer({
   name: 'injections',
   initialize: function(container, application) {
-    application.register('api-store:main', ApiStore.create({ dataUrl: '/api/api.json' }), { instantiate: false });
+    application.register('api-store:main', ApiStore.create({ dataUrl: application.get('apiDataUrl')}), { instantiate: false });
     application.inject('controller', 'apiStore', 'api-store:main');
     application.inject('component:api-class-link', 'apiStore', 'api-store:main');
     application.inject('route', 'apiStore', 'api-store:main');
