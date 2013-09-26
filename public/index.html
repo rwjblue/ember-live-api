@@ -70,7 +70,16 @@
   </div>
   -->
   <script>
-    window.App = require('appkit/app').create({apiDataUrl: '/api/api.json'});
+    function getURLParameterByName(n){
+      var half = location.search.split(n+'=')[1];
+      return half ? decodeURIComponent(half.split('&')[0]) : null;
+    };
+
+    var dataUrl = getURLParameterByName('dataUrl');
+
+    if (!dataUrl) { dataUrl = '/api/api.json' }
+
+    window.App = require('appkit/app').create({apiDataUrl: dataUrl});
   </script>
 </body>
 </html>
