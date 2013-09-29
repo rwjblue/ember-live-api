@@ -236,8 +236,18 @@ ol {
       }
 
       a {
-        padding: 0 0 0 1em;
         line-height: 1.2em;
+        padding: 6px 1em 6px 1em;
+        display: block;
+        text-transform: none;
+        color: #d84a32;
+        font-weight: normal;
+        font-size: 13px;
+
+        &:hover {
+          background-color: #f2d1cb;
+          color: black;
+        }
       }
 
       > ol {

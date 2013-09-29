@@ -12,10 +12,10 @@ import ajax from 'appkit/utils/ajax';
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
 NOTHING = /!^$/;
-FILE_MATCH = /\w*(\/[^\s^#]+)/g;
-CLASS_MATCH = /\b([A-Z][^\s^#]*)/g;
-MODULE_MATCH = /::([^\s]+)/g;
-CLASS_ITEMS_MATCH = /(:?!#)[^#^\s]+|\b[a-z][^#^\s/]+/g;
+FILE_MATCH = /\w*(\/[^\s^#]+)/gi;
+CLASS_MATCH = /\b([A-Z][^\s^#]*)/gi;
+MODULE_MATCH = /::([^\s]+)/gi;
+CLASS_ITEMS_MATCH = /(:?!#)[^#^\s]+|\b[a-z][^#^\s/]+/gi;
 
 var isArray = $.isArray;
 var isObject = $.isPlainObject;
@@ -60,9 +60,11 @@ function compileParsedQuery(parsed) {
 
       if (entry) {
 
+        /* jshint -W083 */
         stringifiedEntry = entry.map(function(entry){
           return splitOnWords(entry).join('.*');
         }).join('|');
+        /* jshint +W083 */
 
         if (stringifiedEntry.length > 0) {
           regex = new RegExp(stringifiedEntry, 'i');
