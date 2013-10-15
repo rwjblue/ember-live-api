@@ -85,7 +85,7 @@ define("resolver",
       var module = require(normalizedModuleName, null, null, true /* force sync */);
 
       if (module === undefined) {
-        throw new Error("Module: '" + name + "' was found but returned undefined. Did you forget to `export default`?");
+        throw new Error(" Expected to find: '" + parsedName.fullName + "' within '" + normalizedModuleName + "' but got 'undefined'. Did you forget to `export default` within '" + normalizedModuleName + "'?");
       }
 
       if (Ember.ENV.LOG_MODULE_RESOLVER) {
@@ -100,7 +100,6 @@ define("resolver",
       return this._super(parsedName);
     }
   }
-
   // Ember.DefaultResolver docs:
   //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({

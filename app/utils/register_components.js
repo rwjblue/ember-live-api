@@ -1,10 +1,13 @@
+/* global requirejs */
+/* global require */
+
 function registerComponents(container) {
   var seen = requirejs._eak_seen;
   var templates = seen, match;
   if (!templates) { return; }
 
   for (var prop in templates) {
-    if (match = prop.match(/components\/(.*)$/)) {
+    if (match = prop.match(/templates\/components\/(.*)$/)) {
       require(prop, null, null, true);
       registerComponent(container, match[1]);
     }
