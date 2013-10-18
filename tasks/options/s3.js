@@ -4,6 +4,7 @@ module.exports = {
       secret: '<%= env.AWS_SECRET_ACCESS_KEY %>',
       bucket: '<%= env.AWS_BUCKET %>',
       access: 'public-read',
+      gzip: true,
       headers: {
         // Two Year cache policy (1000 * 60 * 60 * 24 * 730)
         //"Cache-Control": "max-age=630720000, public",
