@@ -20,23 +20,9 @@
             "description": "Additional methods for the ControllerMixin"
         }
 */
-var ApiClass = Ember.Object.extend({
-  name:           Em.computed.alias('data.name'),
+var ApiClass = Ember.ObjectProxy.extend({
+  content:        Em.computed.alias('data'),
   className:      Em.computed.alias('name'),
-  shortname:      Em.computed.alias('data.shortname'),
-  classitems:     Em.computed.alias('data.classitems'),
-  plugins:        Em.computed.alias('data.plugins'),
-  extensions:     Em.computed.alias('data.extensions'),
-  extension_for:  Em.computed.alias('data.extension_for'),
-  module:         Em.computed.alias('data.module'),
-  submodule:      Em.computed.alias('data.submodule'),
-  namespace:      Em.computed.alias('data.namespace'),
-  file:           Em.computed.alias('data.file'),
-  line:           Em.computed.alias('data.line'),
-  description:    Em.computed.alias('data.description'),
-  static:         Em.computed.alias('data.static'),
-  deprecated:     Em.computed.alias('data.deprecated'),
-  access:         Em.computed.alias('data.access'),
 
   sortBy: ['name'],
 
