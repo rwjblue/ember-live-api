@@ -1,7 +1,7 @@
 {
   "name": "ember-renderspeed",
   "homepage": "https://github.com/eviltrout/ember-renderspeed",
-  "_release": "master",
+  "_release": "b5c9bf4193",
   "_resolution": {
     "type": "branch",
     "branch": "master",
