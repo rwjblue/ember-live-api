@@ -124,7 +124,7 @@
 
     var dataUrl = getURLParameterByName('dataUrl');
 
-    if (!dataUrl) { dataUrl = '/api/api.json' }
+    if (!dataUrl) { dataUrl = 'http://builds.emberjs.com/beta/ember-docs.json' }
 
     window.App = require('appkit/app')["default"].create({apiDataUrl: dataUrl});
   </script>

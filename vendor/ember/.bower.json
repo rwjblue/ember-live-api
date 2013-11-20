@@ -13,9 +13,9 @@
   "_resolution": {
     "type": "version",
     "tag": "1.2.0-beta.4",
-    "commit": "46bcb307d75603279c67f9cec426b277aac6b379"
+    "commit": "a1fc1f0f77d6cbeb854c9ba5ad328977e3e08d90"
   },
   "_source": "git://github.com/components/ember.git",
-  "_target": "~> 1.2.0-beta.2",
+  "_target": "~1.2.0-beta.1",
   "_originalSource": "ember"
 }
