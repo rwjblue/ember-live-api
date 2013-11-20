@@ -2,30 +2,77 @@
 <html>
 <head>
   <title>Ember API Documentation</title>
-  <!-- build:css(tmp/public) assets/app.min.css -->
-  <link href="assets/site.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="assets/highlight.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <!-- build:css(tmp/result) assets/app.min.css -->
+  <link rel="stylesheet" href="/assets/app.css">
+  <link href="/assets/site.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/assets/highlight.css" media="screen" rel="stylesheet" type="text/css" />
   <!-- endbuild -->
 
   <!-- for more details visit: https://github.com/yeoman/grunt-usemin -->
 
-  <!-- build:js(.) assets/vendor.min.js -->
-  <script src="/vendor/marked/lib/marked.js"></script>
-  <script src="/vendor/almond.js"></script>
-  <script src="/vendor/resolver.js"></script>
-  <script src="/vendor/highlightjs/highlight.pack.js"></script>
-  <script src="/vendor/jquery/jquery.js"></script>
-  <script src="/vendor/handlebars/handlebars.js"></script>
-  <script src="/vendor/ember/ember.js"></script>
-  <script src="/vendor/ember-renderspeed/ember-renderspeed.js"></script>
+  <!-- build:js(tmp/result) assets/vendor.min.js -->
+
+    <script src="/vendor/jquery/jquery.js"></script>
+    <script src="/vendor/marked/lib/marked.js"></script>
+    <script src="/vendor/highlightjs/highlight.pack.js"></script>
+
+    <!-- @if dist=false -->
+    <script src="/vendor/handlebars/handlebars.js"></script>
+    <script src="/vendor/ember/ember.js"></script>
+    <script src="/vendor/ember-renderspeed/ember-renderspeed.js"></script>
+    <!-- @endif --><!-- @if dist=true -->
+    <script src="/vendor/handlebars/handlebars.runtime.js"></script>
+    <script src="/vendor/ember/ember.prod.js"></script>
+    <!-- @endif -->
+
+    <script src="/vendor/ember-data/ember-data.js"></script>
+    <script src="/vendor/loader.js"></script>
+    <script src="/vendor/ember-resolver/dist/ember-resolver.js"></script>
+
   <!-- endbuild -->
 
-  <!-- build:js(tmp/public) assets/app.min.js -->
-  <script src="/assets/app.js"></script>
-  <script src="/assets/templates.js"></script>
+  <!-- build:js(tmp/result) assets/app.min.js -->
+
+    <script src="/assets/app.js"></script>
+    <script src="/assets/templates.js"></script>
+
   <!-- endbuild -->
+
+  <!-- @if tests=true -->
+  <link rel="stylesheet" href="/vendor/qunit/qunit/qunit.css">
+  <script src="/vendor/qunit/qunit/qunit.js"></script>
+
+  <style>
+    #ember-testing-container {
+      position: absolute;
+      background: white;
+      bottom: 0;
+      right: 0;
+      width: 640px;
+      height: 384px;
+      overflow: auto;
+      z-index: 9999;
+      border: 1px solid #ccc;
+    }
+    #ember-testing {
+      zoom: 50%;
+    }
+  </style>
+  <!-- @endif -->
+
 </head>
 <body class="api api_index">
+
+  <!-- @if tests=true -->
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="/tests/tests.js"></script>
+  <script src="/tests/test_helper.js"></script>
+  <script src="/tests/test_loader.js"></script>
+  <!-- @endif -->
+
+  <!-- @if tests=false -->
   <div id="header">
     <div id="wrapper">
       <a id="logo" href="/">&nbsp;</a>
@@ -79,7 +126,9 @@
 
     if (!dataUrl) { dataUrl = '/api/api.json' }
 
-    window.App = require('appkit/app').create({apiDataUrl: dataUrl});
+    window.App = require('appkit/app')["default"].create({apiDataUrl: dataUrl});
   </script>
+  <!-- @endif -->
+
 </body>
 </html>

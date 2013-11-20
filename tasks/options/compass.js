@@ -1,8 +1,8 @@
 module.exports = {
   options: {
     sassDir: "app/styles",
-    cssDir: "tmp/public/assets",
-    generatedImagesDir: "tmp/public/images",
+    cssDir: "tmp/result/assets",
+    generatedImagesDir: "tmp/result/images",
     imagesDir: "public/images",
     javascriptsDir: "app",
     fontsDir: "public/fonts",

@@ -66,12 +66,12 @@ function runTests(engine, options) {
     , files = options.files || load()
     , complete = 0
     , failed = 0
-    , skipped = 0
     , keys = Object.keys(files)
     , i = 0
     , len = keys.length
     , filename
     , file
+    , flags
     , text
     , html
     , j
@@ -86,16 +86,28 @@ main:
     filename = keys[i];
     file = files[filename];
 
-    if ((~filename.indexOf('.gfm.') && !marked.defaults.gfm)
-        || (~filename.indexOf('.tables.') && !marked.defaults.tables)
-        || (~filename.indexOf('.breaks.') && !marked.defaults.breaks)
-        || (~filename.indexOf('.pedantic.') && !marked.defaults.pedantic)
-        || (~filename.indexOf('.sanitize.') && !marked.defaults.sanitize)
-        || (~filename.indexOf('.smartlists.') && !marked.defaults.smartLists)
-        || (~filename.indexOf('.smartypants.') && !marked.defaults.smartypants)) {
-      skipped++;
-      console.log('#%d. %s skipped.', i + 1, filename);
-      continue main;
+    if (marked._original) {
+      marked.defaults = marked._original;
+      delete marked._original;
+    }
+
+    flags = filename.split('.').slice(1, -1);
+    if (flags.length) {
+      marked._original = marked.defaults;
+      marked.defaults = {};
+      Object.keys(marked._original).forEach(function(key) {
+        marked.defaults[key] = marked._original[key];
+      });
+      flags.forEach(function(key) {
+        var val = true;
+        if (key.indexOf('no') === 0) {
+          key = key.substring(2);
+          val = false;
+        }
+        if (marked.defaults.hasOwnProperty(key)) {
+          marked.defaults[key] = val;
+        }
+      });
     }
 
     try {
@@ -142,7 +154,8 @@ main:
 
   console.log('%d/%d tests completed successfully.', complete, len);
   if (failed) console.log('%d/%d tests failed.', failed, len);
-  if (skipped) console.log('%d/%d tests skipped.', skipped, len);
+
+  return !failed;
 }
 
 /**
@@ -317,20 +330,24 @@ function fix(options) {
 
   // cp -r original tests
   fs.readdirSync(path.resolve(__dirname, 'original')).forEach(function(file) {
-    fs.writeFileSync(path.resolve(__dirname, 'tests', file),
+    var nfile = file;
+    if (file.indexOf('hard_wrapped_paragraphs_with_list_like_lines.') === 0) {
+      nfile = file.replace(/\.(text|html)$/, '.nogfm.$1');
+    }
+    fs.writeFileSync(path.resolve(__dirname, 'tests', nfile),
       fs.readFileSync(path.resolve(__dirname, 'original', file)));
   });
 
   // node fix.js
   var dir = __dirname + '/tests';
 
-  // fix unencoded quotes
   fs.readdirSync(dir).filter(function(file) {
     return path.extname(file) === '.html';
   }).forEach(function(file) {
     var file = path.join(dir, file)
       , html = fs.readFileSync(file, 'utf8');
 
+    // fix unencoded quotes
     html = html
       .replace(/='([^\n']*)'(?=[^<>\n]*>)/g, '=&__APOS__;$1&__APOS__;')
       .replace(/="([^\n"]*)"(?=[^<>\n]*>)/g, '=&__QUOT__;$1&__QUOT__;')
@@ -338,6 +355,20 @@ function fix(options) {
       .replace(/'/g, '&#39;')
       .replace(/&__QUOT__;/g, '"')
       .replace(/&__APOS__;/g, '\'');
+
+    // add heading id's
+    html = html.replace(/<(h[1-6])>([^<]+)<\/\1>/g, function(s, h, text) {
+      var id = text
+        .replace(/&#39;/g, '\'')
+        .replace(/&quot;/g, '"')
+        .replace(/&gt;/g, '>')
+        .replace(/&lt;/g, '<')
+        .replace(/&amp;/g, '&');
+
+      id = id.toLowerCase().replace(/[^\w]+/g, '-');
+
+      return '<' + h + ' id="' + id + '">' + text + '</' + h + '>';
+    });
 
     fs.writeFileSync(file, html);
   });
@@ -491,7 +522,7 @@ function main(argv) {
 
 if (!module.parent) {
   process.title = 'marked';
-  main(process.argv.slice());
+  process.exit(main(process.argv.slice()) ? 0 : 1);
 } else {
   exports = main;
   exports.main = main;

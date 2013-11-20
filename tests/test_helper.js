@@ -2,11 +2,11 @@ document.write('<div id="ember-testing-container"><div id="ember-testing"></div>
 
 Ember.testing = true;
 
-window.startApp          = require('appkit/tests/helpers/start_app');
-window.isolatedContainer = require('appkit/tests/helpers/isolated_container');
+window.startApp          = require('appkit/tests/helpers/start_app')['default'];
+window.isolatedContainer = require('appkit/tests/helpers/isolated_container')['default'];
 
 function exists(selector) {
-    return !!find(selector).length;
+  return !!find(selector).length;
 }
 
 function getAssertionMessage(actual, expected, message) {

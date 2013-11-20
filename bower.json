@@ -1,15 +1,18 @@
 {
   "name": "ember-app-kit",
   "dependencies": {
-    "handlebars": "1.0.0",
+    "handlebars": "~1.1.2",
     "jquery": "~1.10",
     "qunit": "~1.12.0",
     "marked": "~0.2.9",
     "highlightjs": "~7.3.0",
     "ember-renderspeed": "git://github.com/eviltrout/ember-renderspeed.git",
-    "ember": "1.1.0-beta.2"
+    "ember": "~1.2.0-beta.1",
+    "ember-data": "~1.0.0-beta.3",
+    "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master"
   },
   "resolutions": {
-    "ember": "1.1.0-beta.2"
+    "ember": "~1.2.0-beta.1",
+    "handlebars": "~1.1.2"
   }
 }
