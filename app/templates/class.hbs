@@ -8,7 +8,7 @@
 {{#if deprecated }}<p>DEPRECATED</p>{{/if}}
 {{#if access }}<p>{{accessUpcase}}</p>{{/if}}
 <div class="class-info">
-  {{#if extends}}<p>Extends: {{api-file-link this}}</p>{{/if}}
+  {{#if extends}}<p>Extends: {{api-file-link apiItem=this}}</p>{{/if}}
   {{#if uses}}
     {{#each use in uses}}
     <p>Uses: {{api-class-link className=use}}</p>
