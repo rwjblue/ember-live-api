@@ -14,7 +14,7 @@ current static generated API docs can be found [here](https://github.com/rjackso
 
 To get started:
 
-```
+``` sh
 git clone https://github.com/rjackson/ember-live-api.git
 cd ember-live-api
 npm install
