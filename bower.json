@@ -9,7 +9,8 @@
     "ember-renderspeed": "git://github.com/eviltrout/ember-renderspeed.git",
     "ember": "~1.2.0-beta.4",
     "ember-data": "~1.0.0-beta.3",
-    "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master"
+    "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master",
+    "ic-ajax": "~0.1"
   },
   "resolutions": {
     "ember": "~1.2.0-beta.4",
