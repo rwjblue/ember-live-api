@@ -1,5 +1,3 @@
-function ajax(){
+export default function ajax(){
   return ic.ajax.apply(null, arguments);
 }
-
-export default ajax;
