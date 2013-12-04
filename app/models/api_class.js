@@ -20,7 +20,7 @@
             "description": "Additional methods for the ControllerMixin"
         }
 */
-var ApiClass = Ember.ObjectProxy.extend({
+export default Ember.ObjectProxy.extend({
   content:        Em.computed.alias('data'),
   className:      Em.computed.alias('name'),
 
@@ -57,5 +57,3 @@ var ApiClass = Ember.ObjectProxy.extend({
     return this.get('apiStore').findClass(className);
   }
 });
-
-export default ApiClass;

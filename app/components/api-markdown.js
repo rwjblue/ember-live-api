@@ -1,6 +1,6 @@
 import markedOverrideCodeBlock from 'appkit/utils/marked_code_block_override';
 
-var ApiMarkdown = Ember.Component.extend({
+export default Ember.Component.extend({
   tagName: 'span',
 
   markdown: function(){
@@ -10,5 +10,3 @@ var ApiMarkdown = Ember.Component.extend({
     return new Ember.Handlebars.SafeString(markdown);
   }.property('text'),
 });
-
-export default ApiMarkdown;

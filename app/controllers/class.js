@@ -1,7 +1,7 @@
 var alias = Ember.computed.alias;
 var notEmpty = Ember.computed.notEmpty;
 
-var ClassController = Ember.ObjectController.extend({
+export default Ember.ObjectController.extend({
   needs: ['application'],
   application: alias('controllers.application'),
   currentRouteName: alias('application.currentRouteName'),
@@ -40,5 +40,3 @@ var ClassController = Ember.ObjectController.extend({
     return this.get('currentRouteName').indexOf('class.' + subroute) !== -1;
   }
 });
-
-export default ClassController;

@@ -3,7 +3,7 @@ import ItemClassesMixin from 'appkit/mixins/item_classes';
 
 var alias = Ember.computed.alias;
 
-var ClassItemDetailComponent = Ember.Component.extend(ItemUrlMixin, ItemClassesMixin, {
+export default Ember.Component.extend(ItemUrlMixin, ItemClassesMixin, {
   content:               alias('item'),
   type:                  alias('item.itemtype'),
   name:                  alias('item.name'),
@@ -35,5 +35,3 @@ var ClassItemDetailComponent = Ember.Component.extend(ItemUrlMixin, ItemClassesM
     return params.mapBy('name').join(', ');
   }.property('params'),
 });
-
-export default ClassItemDetailComponent;

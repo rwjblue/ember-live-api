@@ -126,7 +126,7 @@ function parseQuery(query) {
   return result;
 }
 
-var ApiStore = Ember.Object.extend({
+export default Ember.Object.extend({
   dataUrl: Ember.required(),
   isLoaded: false,
 
@@ -231,5 +231,3 @@ var ApiStore = Ember.Object.extend({
     return this.findClass(namespaceName);
   }
 });
-
-export default ApiStore;

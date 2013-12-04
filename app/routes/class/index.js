@@ -1,4 +1,4 @@
-var ClassIndexRoute = Ember.Route.extend({
+export default Ember.Route.extend({
   redirect: function(model){
     this.transitionTo('class.all', model.get('name'));
   },
@@ -7,5 +7,3 @@ var ClassIndexRoute = Ember.Route.extend({
     return this.modelFor('class');
   }
 });
-
-export default ClassIndexRoute;

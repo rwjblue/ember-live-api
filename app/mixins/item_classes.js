@@ -1,4 +1,4 @@
-var ItemClassesMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   classes: function(){
     var classes               = [],
         item                  = this.get('content'),
@@ -19,5 +19,3 @@ var ItemClassesMixin = Ember.Mixin.create({
     return classes.join(' ');
   }.property('content')
 });
-
-export default ItemClassesMixin;

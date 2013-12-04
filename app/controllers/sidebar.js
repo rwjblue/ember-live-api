@@ -1,4 +1,4 @@
-var SidebarController = Ember.ObjectController.extend({
+export default Ember.ObjectController.extend({
   query:        null,
   lastQuery:    null,
   isLoaded:     Em.computed.bool('apiStore.data'),
@@ -22,5 +22,3 @@ var SidebarController = Ember.ObjectController.extend({
 
   }.observes('query')
 });
-
-export default SidebarController;

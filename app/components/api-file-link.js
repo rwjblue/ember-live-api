@@ -1,6 +1,6 @@
 /* TODO: Fix repoUrl & sha */
 
-var ApiFileLink = Ember.Component.extend({
+export default Ember.Component.extend({
   tagName: 'span',
   moduleName: Ember.required('must supply the moduleName to look for'),
   apiStore:  Ember.required('must supply the apiStore to use for class lookups.'),
@@ -51,5 +51,3 @@ var ApiFileLink = Ember.Component.extend({
     return title;
   }.property('line', 'path', 'title')
 });
-
-export default ApiFileLink;

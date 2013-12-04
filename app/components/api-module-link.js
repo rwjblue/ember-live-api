@@ -1,4 +1,4 @@
-var ApiModuleLink = Ember.Component.extend({
+export default Ember.Component.extend({
   tagName: 'span',
   moduleName: Ember.required('must supply the moduleName to look for'),
   apiStore:  Ember.required('must supply the apiStore to use for class lookups.'),
@@ -18,6 +18,3 @@ var ApiModuleLink = Ember.Component.extend({
     return this.get('moduleName');
   }.property('moduleName')
 });
-
-export default ApiModuleLink;
-

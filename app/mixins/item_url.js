@@ -1,4 +1,4 @@
-var ItemUrlMixin = Ember.Mixin.create({
+export default Ember.Mixin.create({
   sanitize: function(url){
     return url.replace(/[^a-z0-9_-]+/i, '_');
   },
@@ -14,5 +14,3 @@ var ItemUrlMixin = Ember.Mixin.create({
     return this.get('itemId');
   }.property('type','name'),
 });
-
-export default ItemUrlMixin;
