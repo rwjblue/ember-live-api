@@ -1,8 +1,15 @@
 language: node_js
 node_js:
-  - 0.10
+- "0.10"
 before_script:
-  - npm install -g grunt-cli
-  - gem install compass
-  - npm install -g bower
-  - bower install
+- npm install -g grunt-cli
+- gem install compass
+- npm install -g bower
+- bower install
+after_success:
+  - grunt deploy
+env:
+  global:
+  - secure: hBaLyoGkWTwh+fiPnABekKDCLpMoPHvLxlKs4bLHcJ7NeVXM5BCo9Cmdxz20LTLfVS/UHUqmbUblS9UZOe8MRS1L5k46vrxuMJzJJ73BH+RjzLvAkY/CNrrH5/hbpy2UeVLjjzTpGz9QfFnAK9s/SfzAwKN4W0WpoptLSIoucss=
+  - secure: DeOXz8hlHPyiQiXs+HO9fbhXumVVG3gKcEO5rbxQguwPpEImPOoK09bLosAq920EMz3wO4YBo0YPaHeCvamXYp+nQD7Oivi30hM6WeC8yYY3P2swd6+zqxCpyAEONDTLhrg557reZtqHZaJS8i5DfF2kEAEbHsIJ7gaWXeA44V4=
+  - secure: Dv/gbQrpQA6TSaCS67mFi9j/uaTJKqBk2IxXjKBPRJPwE7YIUlKsp9AaYs/dEarEjPHh/RlrSgWkCGCMZQpABfQXB+AntR6OP9zqjuC/pVJO/DvSkdepRvYf10jvosE+ISOh3zEAnD1P3Sds2TaUNPsGEJKwaZmA76lmi5G1d9I=
