@@ -25,7 +25,7 @@ function mainSetup(callback){
     ajax(sampleDataUrl, { dataType: 'json' })
          .then(createApiStore)
          .then(callback)
-         .fail(Ember.RSVP.rethrow);
+         .catch(Ember.RSVP.rethrow);
   });
 }
 
@@ -83,7 +83,7 @@ test("it gets an ApiClass instance back from findClass", function() {
   Ember.run(function() {
     apiStore.findClass('Ember.ControllerMixin')
             .then(testResult)
-            .fail(Ember.RSVP.rethrow);
+            .catch(Ember.RSVP.rethrow);
   });
 });
 
@@ -183,7 +183,7 @@ test('can actually search for classitems', function(){
 
   Ember.run(function(){
     apiStore.search('dd').then(assertions)
-                         .fail(Ember.RSVP.rethrow);
+                         .catch(Ember.RSVP.rethrow);
   });
 });
 
@@ -196,7 +196,7 @@ test('can actually search for classes', function(){
 
   Ember.run(function(){
     apiStore.search('Ember').then(assertions)
-                         .fail(Ember.RSVP.rethrow);
+                         .catch(Ember.RSVP.rethrow);
   });
 });
 
@@ -210,6 +210,6 @@ test('can actually search for modules', function(){
   Ember.run(function(){
     apiStore.search('::Emb')
             .then(assertions)
-            .fail(Ember.RSVP.rethrow);
+            .catch(Ember.RSVP.rethrow);
   });
 });

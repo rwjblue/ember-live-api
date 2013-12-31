@@ -139,7 +139,7 @@ export default Ember.Object.extend({
       data = ajax(url, { dataType: 'json' });
 
     data.then(function(data){ self.calculateIndex(data); return data; })
-        .fail(Ember.RSVP.rethrow);
+        .catch(Ember.RSVP.rethrow);
 
     this.set('data', data);
   },
