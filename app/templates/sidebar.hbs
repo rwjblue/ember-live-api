@@ -1,17 +1,19 @@
 {{#if isLoaded}}
   <ol id='toc-list'>
+  {{!--
     <li class="level-1">
-    <a>Search</a>
-    {{input class="api-search-box" value=query}}
+      <a>Search</a>
+      {{input class="api-search-box" value=query}}
     </li>
-  {{#if isSearching}}
-  {{partial 'searchResults'}}
-  {{else}}
+    {{#if isSearching}}
+      {{partial 'searchResults'}}
+    {{else}}
+  --}}
     <li class="level-1 ">
       <a href='#'>Modules</a>
       <ol>
         {{#each modules}}
-          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+          <li class="level-3">{{api-module-link model=this}}</li>
         {{/each}}
       </ol>
     </li>
@@ -19,7 +21,7 @@
       <a href='#'>Namespaces</a>
       <ol>
         {{#each namespaces}}
-          <li class="level-3"><a href="#fixme">{{this}}</a></li>
+          <li class="level-3">{{api-class-link model=this}}</li>
         {{/each}}
       </ol>
     </li>
@@ -27,11 +29,11 @@
       <a href='#'>Classes</a>
       <ol>
         {{#each classes}}
-        <li class="level-3">{{api-class-link className=this}}</li>
+          <li class="level-3">{{api-class-link model=this}}</li>
         {{/each}}
       </ol>
     </li>
-  {{/if}}
+  {{!/if}}
   </ol>
   {{else}}
   Loading...

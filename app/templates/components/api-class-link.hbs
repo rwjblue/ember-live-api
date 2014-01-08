@@ -1,5 +1,3 @@
-{{#if className}}
-  {{#link-to 'class.all' className}}{{className}}{{/link-to}}
-{{else}}
-  {{title}}
-{{/if}}
+{{#with model}}
+  {{link-to name 'class' name}}
+{{/with}}

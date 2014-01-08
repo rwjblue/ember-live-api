@@ -13,7 +13,6 @@ module.exports = function(config) {
       'vendor/handlebars/handlebars.js',
       'vendor/highlightjs/highlight.pack.js',
       'vendor/ember/ember.js',
-      'vendor/ember-data/ember-data.js',
       'vendor/ic-ajax/main.js',
       'vendor/ember-cloaking/index.js',
       'tmp/result/assets/templates.js',

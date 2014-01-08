@@ -1,30 +1,37 @@
 <h1 class="api-header">
   {{name}} {{#if static}}Namespace{{else}}Class{{/if}}
-  {{api-file-link apiItem=this cssClass='edit-page'}}
+  {{api-file-link model=this linkClass='edit-page'}}
 </h1>
 
 <hr>
 
-{{#if deprecated }}<p>DEPRECATED</p>{{/if}}
-{{#if access }}<p>{{accessUpcase}}</p>{{/if}}
+{{#if deprecated}}
+  <p>DEPRECATED</p>
+{{/if}}
+
+{{#if access}}
+  <p>{{accessUpcase}}</p>
+{{/if}}
+
 <div class="class-info">
-  {{#if extends}}<p>Extends: {{api-file-link apiItem=this}}</p>{{/if}}
-  {{#if uses}}
-    {{#each use in uses}}
-    <p>Uses: {{api-class-link className=use}}</p>
-    {{/each}}
+  {{#if extends}}
+    <p>Extends: {{api-class-link model=extends}}</p>
   {{/if}}
 
+  {{#each use in uses}}
+    <p>Uses: {{api-class-link model=use}}</p>
+  {{/each}}
+
   {{#if file}}
-    <p>Defined in: {{api-file-link apiItem=this}}</p>
+    <p>Defined in: {{api-file-link model=this}}</p>
+  {{/if}}
+
+  {{#if module}}
+    <p>Module: {{api-module-link model=module}}</p>
   {{/if}}
 
   {{#if submodule}}
-    <p>Module: {{api-module-link moduleName=submodule apiStore=apiStore}}</p>
-  {{else}}
-    {{#if module}}
-      <p>Module: {{api-module-link moduleName=module apiStore=apiStore}}</p>
-    {{/if}}
+    <p>Submodule: {{api-module-link model=submodule}}</p>
   {{/if}}
 </div>
 
@@ -34,33 +41,17 @@
   </div>
 {{/if}}
 
-{{#if typesPresent}}
+{{#if hasClassitems}}
   <div class="tabs">
     <ul>
-      <li {{bind-attr class="isAllRoute:active"}}>{{#link-to 'class.all' this}}Index{{/link-to}}</li>
-      {{#if methodsPresent}}
-        <li {{bind-attr class="isMethodsRoute:active"}}>{{#link-to 'class.methods' this}}Methods{{/link-to}}</li>
-      {{/if}}
-      {{#if propertiesPresent}}
-        <li {{bind-attr class="isPropertiesRoute:active"}}>{{#link-to 'class.properties' this}}Properties{{/link-to}}</li>
-      {{/if}}
-      {{#if eventsPresent}}
-        <li {{bind-attr class="isEventsRoute:active"}}>{{#link-to 'class.events' this}}Events{{/link-to}}</li>
-      {{/if}}
+      {{#link-to 'class.index' tagName='li'}}{{link-to "Index" 'class.index'}}{{/link-to}}
+      {{#link-to 'methods' tagName='li'}}{{link-to "Methods" 'methods'}}{{/link-to}}
+      {{#link-to 'properties' tagName='li'}}{{link-to "Properties" 'properties'}}{{/link-to}}
+      {{#link-to 'events' tagName='li'}}{{link-to "Events" 'events'}}{{/link-to}}
     </ul>
-    {{#each type in types}}
-    {{/each}}
+    <div class="pane">
+      {{partial 'apiOptions'}}
+      {{outlet}}
+    </div>
   </div>
 {{/if}}
-
-{{outlet}}
-{{!
-  <% types.each do |type| %>
-    <div class="pane" id="<%= type.pluralize %>">
-      <%= partial "api_options" %>
-      <% @class.classitems[type].sort.each do |(name, data)| %>
-        <%= partial "api/item", :locals => { :item => data, :type => type } %>
-      <% end %>
-    </div>
-  <% end %>
-}}

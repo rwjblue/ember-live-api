@@ -1,11 +1,11 @@
-<div {{bind-attr id=itemId class=classes}}>
-  <h3 {{bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{name}}</code></h3>
+<div class="method" {{!bind-attr id=itemId class=classes}}>
+  <h3 {{!bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{name}}</code></h3>
   {{#if paramsListing}}
     <span class="args">({{paramsListing}})</span>
   {{/if}}
-
+  
   {{#if returnType}}
-    <span class="type">{{api-class-link className=returnType}}</span>
+    <span class="type">{{returnType}}{{!api-class-link className=returnType}}</span>
   {{/if}}
 
   {{#if deprecated}}
@@ -25,7 +25,7 @@
     {{#if overwrittenFromClass}}
       Inherited from
       {{! TODO: Make direct method links work}}
-      {{api-class-link className=overwrittenFromClass}}
+      {{!api-class-link className=overwrittenFromClass}}
       
       {{#if file}}
         but overwritten in
@@ -33,14 +33,14 @@
     {{else}}
       {{#if extendedFrom}}
         Inherited from
-        {{api-class-link className=extendedFrom}}
+        {{!api-class-link className=extendedFrom}}
       {{else}}
         {{#if file}}
           Defined in
         {{/if}}
       {{/if}}
     {{/if}}
-    {{api-file-link apiItem=item}}
+    {{api-file-link model=model}}
 
     {{! TODO: Handle deprecation message }}
     {{#if since}}
@@ -78,7 +78,7 @@
 
       <dl>
         {{#each params}}
-          <dt><strong>{{name}}</strong> <span class="type">{{api-class-link className=type}}</span></dt>
+          <dt><strong>{{name}}</strong> <span class="type">{{!api-class-link className=type}}</span></dt>
           <dd>{{description}}</dd>
         {{/each}}
       </dl>
@@ -89,7 +89,7 @@
     <div class="return">
       <h3>Returns:</h3>
       <dl>
-        <dt><span class="type">{{api-class-link className=returnType}}</span>
+        <dt><span class="type">{{!api-class-link className=returnType}}</span>
         <dd>{{returnDescription}}</dd>
       </dl>
     </div>

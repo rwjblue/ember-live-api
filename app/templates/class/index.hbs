@@ -1,0 +1,26 @@
+{{#if hasFilteredMethods}}
+  <p></p><h2>Methods</h2><p></p>
+  <ul class="index-list">
+    {{#each filteredMethods}}
+      {{api-classitem-link model=this tagName="li"}}
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if hasFilteredProperties}}
+  <p></p><h2>Properties</h2><p></p>
+  <ul class="index-list">
+    {{#each filteredProperties}}
+      {{api-classitem-link model=this tagName="li"}}
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if hasFilteredEvents}}
+  <p></p><h2>Events</h2><p></p>
+  <ul class="index-list">
+    {{#each filteredEvents}}
+      {{api-classitem-link model=this tagName="li"}}
+    {{/each}}
+  </ul>
+{{/if}}
