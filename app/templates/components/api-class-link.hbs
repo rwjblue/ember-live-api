@@ -1,3 +1,7 @@
 {{#with model}}
-  {{link-to name 'class' name}}
+  {{#if isStub}}
+    {{name}}
+  {{else}}
+    {{link-to name 'class' name}}
+  {{/if}}
 {{/with}}

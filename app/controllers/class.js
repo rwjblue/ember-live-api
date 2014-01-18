@@ -2,7 +2,7 @@ var filterBy = Ember.computed.filterBy;
 var notEmpty = Ember.computed.notEmpty;
 
 export default Ember.ObjectController.extend({
-  showInherited: true,
+  showInherited: false,
   showProtected: false,
   showPrivate: false,
   showDeprecated: true,

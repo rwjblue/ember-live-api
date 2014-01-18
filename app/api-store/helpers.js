@@ -1,14 +1,10 @@
 var isEmpty = Ember.isEmpty,
     keys = Ember.keys;
 
-
-var projectData = {
-  repoUrl: 'https://github.com/emberjs/ember.js',
-  sha: 'v1.0.0'
-};
-
 function getProject() {
-  return projectData;
+  return Ember.computed(function() {
+    return this.store.findProject();
+  });
 }
 
 function getModule(moduleNameKey) {
@@ -38,11 +34,11 @@ function getModules(moduleNamesKey) {
   }).property(moduleNamesKey);
 }
 
-function getClass(classNameKey) {
+function getClass(classNameKey, options) {
   return Ember.computed(function() {
     var className = this.get(classNameKey);
     if (isEmpty(className)) return;
-    return this.store.findClass(className);
+    return this.store.findClass(className, options);
   }).property(classNameKey);
 }
 
@@ -65,6 +61,7 @@ function getClasses(classNamesKey) {
   }).property(classNamesKey);
 }
 
+// TODO: Drop the argument and just use this.name?
 function getOwnClassitems(classNameKey) {
   return Ember.computed(function() {
     var className = this.get(classNameKey);
@@ -73,11 +70,27 @@ function getOwnClassitems(classNameKey) {
   }).property(classNameKey);
 }
 
+function hasClass(classNameKey) {
+  return Ember.computed(function() {
+    var className = this.get(classNameKey);
+    return this.store.hasClass(className);
+  }).property(classNameKey);
+}
+
+function hasModule(moduleNameKey) {
+  return Ember.computed(function() {
+    var moduleName = this.get(moduleNameKey);
+    return this.store.hasModule(moduleName);
+  }).property(moduleNameKey);
+}
+
 export {
   getProject,
   getModule,
   getModules,
   getClass,
   getClasses,
-  getOwnClassitems
+  getOwnClassitems,
+  hasClass,
+  hasModule
 };

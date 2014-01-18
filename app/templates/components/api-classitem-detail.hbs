@@ -1,26 +1,19 @@
 <div class="method" {{!bind-attr id=itemId class=classes}}>
-  <h3 {{!bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{name}}</code></h3>
+  <h3 {{!bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{model.name}}</code></h3>
   {{#if paramsListing}}
     <span class="args">({{paramsListing}})</span>
   {{/if}}
-  
-  {{#if returnType}}
-    <span class="type">{{returnType}}{{!api-class-link className=returnType}}</span>
-  {{/if}}
 
-  {{#if deprecated}}
-    <span class="flag deprecated">deprecated</span>
-  {{/if}}
+  {{#if model.type}}<span class="type">{{api-class-link model=model.type}}</span>{{/if}}
+  {{#if model.hasReturnType}}<span class="type">{{api-class-link model=model.returnType}}</span>{{/if}}
+  {{#if model.deprecated}} <span class="flag deprecated">deprecated</span> {{/if}}
+  {{#if model.access}} <span {{bind-attr class=":flag model.access"}}>{{model.access}}</span> {{/if}}
+  {{#if model.final}} <span class="flag final">constant</span> {{/if}}
+  {{#if model.static}} <span class="flag static">static</span> {{/if}}
+  {{#if model.optional}} <span class="flag optional">optional</span> {{/if}}
+  {{#if model.required}} <span class="flag required">required</span> {{/if}}
 
-  {{#if access}}
-    <span {{bind-attr class=":flag access"}}>{{access}}</span>
-  {{/if}}
-
-  {{#if final}} <span class="flag final">constant</span> {{/if}}
-  {{#if static}} <span class="flag static">static</span> {{/if}}
-  {{#if optional}} <span class="flag optional">optional</span> {{/if}}
-  {{#if required}} <span class="flag required">required</span> {{/if}}
-
+  {{! TODO BEFORE SHIPPING }}
   <div class="meta">
     {{#if overwrittenFromClass}}
       Inherited from
@@ -43,54 +36,55 @@
     {{api-file-link model=model}}
 
     {{! TODO: Handle deprecation message }}
-    {{#if since}}
-      <br/>Available since {{since}}
+    {{#if model.since}}
+      <br/>Available since {{model.since}}
     {{/if}}
   </div>
 
-  {{#if description}}
+  {{#if model.description}}
     <div class="description">
-      {{api-markdown text=description}}
+      {{api-markdown text=model.description}}
     </div>
   {{/if}}
 
   <p>
-    {{#if default}}
-      <strong>Default:</strong> <code>{{default}}</code>
+    {{#if model.default}}
+      <strong>Default:</strong> <code>{{model.default}}</code>
     {{/if}}
+    &nbsp;
   </p>
 
-  {{#if example}}
+  {{#if model.example}}
     <div class="example">
       <h4>Example:</h4>
 
       <div class="example-content">
-        {{#each example}}
-          {{api-markdown text=example}}
+        {{#each model.example}}
+          {{api-markdown text=model.example}}
         {{/each}}
       </div>
     </div>
   {{/if}}
 
-  {{#if params}}
+  {{#if model.hasParams}}
     <div class="params">
       <h3>Parameters:</h3>
 
       <dl>
-        {{#each params}}
-          <dt><strong>{{name}}</strong> <span class="type">{{!api-class-link className=type}}</span></dt>
+        {{#each model.params}}
+          <dt><strong>{{name}}</strong> <span class="type">{{api-class-link model=type}}</span></dt>
           <dd>{{description}}</dd>
         {{/each}}
       </dl>
     </div>
   {{/if}}
 
-  {{#if returnType}}
+  {{#if model.hasReturnType}}
     <div class="return">
       <h3>Returns:</h3>
       <dl>
-        <dt><span class="type">{{!api-class-link className=returnType}}</span>
-        <dd>{{returnDescription}}</dd>
+        <dt><span class="type">{{api-class-link model=model.returnType}}</span>
+        <dd>{{model.returnDescription}}</dd>
       </dl>
     </div>
   {{/if}}

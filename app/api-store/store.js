@@ -6,6 +6,11 @@
  * any mistakes, errors, or complete butchering are attributed to Robert Jackson.
  */
 
+var projectData = {
+  repoUrl: 'https://github.com/emberjs/ember.js',
+  sha: 'v1.0.0'
+};
+
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
 NOTHING = /!^$/;
@@ -192,15 +197,26 @@ export default Ember.Object.extend({
   },
 
   // Finder Methods
-
-  findItem: function(type, name) {
+  findItem: function(type, name, options) {
     if (!name) return;
+
     var itemData = this.get('data')[type][name];
+
+    if (!itemData) {
+      if (options && options.stub) {
+        var item = this.buildItem(type, name, {name: name});
+        item.isStub = true;
+        return item;
+      } else {
+        return;
+      }
+    }
+    
     return this.buildItem(type, name, itemData);
   },
 
-  findClass: function(className) {
-    return this.findItem('classes', className);
+  findClass: function(className, options) {
+    return this.findItem('classes', className, options);
   },
 
   findOwnClassitems: function(className) {
@@ -219,5 +235,19 @@ export default Ember.Object.extend({
 
   findNamespace: function(namespaceName){
     return this.findClass(namespaceName);
+  },
+
+  findProject: function(){
+    return projectData;
+  },
+
+  // Existential methods
+
+  hasClass: function (className) {
+    return !!this.store.findClass(className);
+  },
+
+  hasModule: function (moduleName) {
+    return !!this.store.findModule(moduleName);
   }
 });
