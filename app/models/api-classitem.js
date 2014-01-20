@@ -1,9 +1,10 @@
 import Model from 'appkit/api-store/model';
-import { getClass } from 'appkit/api-store/helpers';
+import { getClass, getProject } from 'appkit/api-store/helpers';
 
 var notEmpty = Ember.computed.notEmpty,
     alias = Ember.computed.alias;
 
+// TODO: Support nested params
 var Param = Model.extend({
   name:            alias('data.name'),
   description:     alias('data.description'),
@@ -12,12 +13,14 @@ var Param = Model.extend({
 });
 
 export default Model.extend({
+  project:               getProject(),
+
   file:                  alias('data.file'),
   line:                  alias('data.line'),
   itemtype:              alias('data.itemtype'),
   name:                  alias('data.name'),
-  class:                 alias('data.class'),
 
+  class:                 getClass('data.class'),
   type:                  getClass('data.type', {stub: true}),
 
   hasReturnType:         notEmpty('data.return.type'),
