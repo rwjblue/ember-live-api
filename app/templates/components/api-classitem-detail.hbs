@@ -1,0 +1,98 @@
+<div class="method" {{!bind-attr id=itemId class=classes}}>
+  <h3 {{!bind-attr data-id=itemId}} class="name anchorable-toc"><code>{{classitem.name}}</code></h3>
+  {{#if paramsListing}}
+    <span class="args">({{paramsListing}})</span>
+  {{/if}}
+
+  {{#if classitem.type}}<span class="type">{{api-class-link model=classitem.type}}</span>{{/if}}
+  {{#if classitem.hasReturnType}}<span class="type">{{api-class-link model=classitem.returnType}}</span>{{/if}}
+  {{#if classitem.deprecated}} <span class="flag deprecated">deprecated</span> {{/if}}
+  {{#if classitem.access}} <span {{bind-attr class=":flag classitem.access"}}>{{classitem.access}}</span> {{/if}}
+  {{#if classitem.final}} <span class="flag final">constant</span> {{/if}}
+  {{#if classitem.static}} <span class="flag static">static</span> {{/if}}
+  {{#if classitem.optional}} <span class="flag optional">optional</span> {{/if}}
+  {{#if classitem.required}} <span class="flag required">required</span> {{/if}}
+
+  <div class="meta">
+    {{#if isInherited}}
+      {{#if mostRecentAncestor.rootMixin}}
+        Inherited from {{api-class-link model=mostRecentAncestor.classMixedInto}}
+        in {{api-class-link model=mostRecentAncestor.rootMixin}}
+      {{else}}
+        Inherited from {{api-class-link model=mostRecentAncestor.classitem.class}}
+      {{/if}}
+    {{else}}
+      {{#if mostRecentAncestor.rootMixin}}
+        Mixed in from {{api-class-link model=mostRecentAncestor.rootMixin}}
+      {{else}}
+        Defined
+      {{/if}}
+    {{/if}}
+    at {{api-file-link model=mostRecentAncestor.classitem}}
+
+    {{#each laterAncestors}}
+      <br>
+      Overrides
+      {{#if rootMixin}}
+        {{api-class-link model=classMixedInto}}
+        in mixin {{api-class-link model=rootMixin}}
+      {{else}}
+        {{api-class-link model=classitem.class}}
+      {{/if}}
+      at {{api-file-link model=classitem}}
+    {{/each}}
+
+    {{! TODO: Handle deprecation message }}
+    {{#if classitem.since}}
+      <br/>Available since {{classitem.since}}
+    {{/if}}
+  </div>
+
+  {{#if classitem.description}}
+    <div class="description">
+      {{api-markdown text=classitem.description}}
+    </div>
+  {{/if}}
+
+  <p>
+    {{#if classitem.default}}
+      <strong>Default:</strong> <code>{{classitem.default}}</code>
+    {{/if}}
+    &nbsp;
+  </p>
+
+  {{#if classitem.example}}
+    <div class="example">
+      <h4>Example:</h4>
+
+      <div class="example-content">
+        {{#each classitem.example}}
+          {{api-markdown text=this}}
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if classitem.hasParams}}
+    <div class="params">
+      <h3>Parameters:</h3>
+
+      <dl>
+        {{#each classitem.params}}
+          <dt><strong>{{name}}</strong> <span class="type">{{api-class-link model=type}}</span></dt>
+          <dd>{{description}}</dd>
+        {{/each}}
+      </dl>
+    </div>
+  {{/if}}
+
+  {{#if classitem.hasReturnType}}
+    <div class="return">
+      <h3>Returns:</h3>
+      <dl>
+        <dt><span class="type">{{api-class-link model=classitem.returnType}}</span>
+        <dd>{{classitem.returnDescription}}</dd>
+      </dl>
+    </div>
+  {{/if}}
+</div>

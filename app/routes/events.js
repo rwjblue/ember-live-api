@@ -1,5 +1,7 @@
 export default Ember.Route.extend({
-  model: function(params){
+  controllerName: 'class',
+  
+  model: function(params) {
     return this.modelFor('class');
   }
 });

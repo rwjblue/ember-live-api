@@ -1,8 +1,6 @@
 export default Ember.Route.extend({
-  redirect: function(model){
-    this.transitionTo('class.all', model.get('name'));
-  },
-
+  controllerName: 'class',
+  
   model: function(params){
     return this.modelFor('class');
   }

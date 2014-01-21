@@ -1,5 +1,7 @@
-{{#if className}}
-  {{#link-to 'class.all' className}}{{className}}{{/link-to}}
-{{else}}
-  {{title}}
-{{/if}}
+{{#with model}}
+  {{#if isStub}}
+    {{name}}
+  {{else}}
+    {{link-to name 'class' name}}
+  {{/if}}
+{{/with}}

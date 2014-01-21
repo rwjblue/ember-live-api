@@ -6,8 +6,10 @@
  * any mistakes, errors, or complete butchering are attributed to Robert Jackson.
  */
 
-import ApiClass from 'appkit/models/api_class';
-import ajax from 'appkit/utils/ajax';
+var projectData = {
+  repoUrl: 'https://github.com/emberjs/ember.js',
+  sha: 'v1.0.0'
+};
 
 var FILE_MATCH, CLASS_MATCH, MODULE_MATCH, CLASS_ITEMS_MATCH, NOTHING;
 
@@ -127,20 +129,9 @@ function parseQuery(query) {
 }
 
 export default Ember.Object.extend({
-  dataUrl: Ember.required(),
-  isLoaded: false,
-
-  init: function(){
-    var self = this,
-        url  = this.get('dataUrl'),
-        data = this.get('data');
-
-    if (!data && url)
-      data = ajax(url, { dataType: 'json' });
-
-    data.then(function(data){ self.calculateIndex(data); return data; })
-        .catch(Ember.RSVP.rethrow);
-
+  
+  load: function(data) {
+    this.calculateIndex(data);
     this.set('data', data);
   },
 
@@ -180,12 +171,12 @@ export default Ember.Object.extend({
     parsedQuery = parseQuery(query);
     compiledQuery = compileParsedQuery(parsedQuery);
 
-    promises = { data:     this.get('data'),
-                 files:    this.get('files'),
-                 modules:  this.get('modules'),
-                 classes:  this.get('classes')};
+    var results = { data:     this.get('data'),
+                    files:    this.get('files'),
+                    modules:  this.get('modules'),
+                    classes:  this.get('classes') };
 
-    return Ember.RSVP.hash(promises).then(function(results){
+    
       var classitems = results.data['classitems'];
 
       // TODO: merge the results
@@ -197,29 +188,44 @@ export default Ember.Object.extend({
       self.set('searchResults', result);
 
       return result;
-    });
   },
 
-  findItem: function(type, name) {
-    var self = this,
+  buildItem: function(type, name, data) {
+    var fullName = 'model:' + type.singularize();
+    var model = this.container.lookup(fullName);
+    return model.setProperties({ store: this, data: data });
+  },
+
+  // Finder Methods
+  findItem: function(type, name, options) {
+    if (!name) return;
+
+    var itemData = this.get('data')[type][name];
+
+    if (!itemData) {
+      if (options && options.stub) {
+        var item = this.buildItem(type, name, {name: name});
+        item.isStub = true;
+        return item;
+      } else {
+        return;
+      }
+    }
+    
+    return this.buildItem(type, name, itemData);
+  },
+
+  findClass: function(className, options) {
+    return this.findItem('classes', className, options);
+  },
+
+  findOwnClassitems: function(className) {
+    var store = this,
         data = this.get('data');
 
-    return data.then(function(data){
-       return Ember.Object.create(data[type][name]);
-    });
-  },
-
-  findClass: function(className){
-    var self  = this,
-        promises = {data: this.get('data'),
-                    object: this.findItem('classes', className)};
-
-    return Ember.RSVP.hash(promises).then(function(results){
-      var classitems = results.data['classitems'].filterBy('class', className);
-
-      results.object.set('classitems', classitems);
-
-      return ApiClass.create({data: results.object, apiStore: self});
+    return data.classitems.filterBy('class', className).map(function(classitemData) {
+      var classitemFullName = className + '#' + classitemData.name;
+      return store.buildItem('classitems', classitemFullName, classitemData);
     });
   },
 
@@ -229,5 +235,19 @@ export default Ember.Object.extend({
 
   findNamespace: function(namespaceName){
     return this.findClass(namespaceName);
+  },
+
+  findProject: function(){
+    return projectData;
+  },
+
+  // Existential methods
+
+  hasClass: function (className) {
+    return !!this.store.findClass(className);
+  },
+
+  hasModule: function (moduleName) {
+    return !!this.store.findModule(moduleName);
   }
 });

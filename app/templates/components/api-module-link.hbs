@@ -1,5 +1,3 @@
-{{#if found}}
-  {{#link-to 'modules.show' moduleName}}{{title}}{{/link-to}}
-{{else}}
-  {{title}}
-{{/if}}
+{{#with model}}
+  {{#link-to 'modules.show' name}}{{name}}{{/link-to}}
+{{/with}}

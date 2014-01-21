@@ -1,5 +1,9 @@
-import Resolver from 'resolver';
-import ApiStore from 'appkit/models/api_store';
+import Resolver     from 'resolver';
+import Store        from 'appkit/api-store/store';
+
+import ApiModule    from 'appkit/models/api-module';
+import ApiClass     from 'appkit/models/api-class';
+import ApiClassitem from 'appkit/models/api-classitem';
 
 var App = Ember.Application.extend({
   LOG_ACTIVE_GENERATION: true,
@@ -13,10 +17,13 @@ var App = Ember.Application.extend({
 App.initializer({
   name: 'injections',
   initialize: function(container, application) {
-    application.register('api-store:main', ApiStore.create({ dataUrl: application.get('apiDataUrl')}), { instantiate: false });
-    application.inject('controller', 'apiStore', 'api-store:main');
-    application.inject('component:api-class-link', 'apiStore', 'api-store:main');
-    application.inject('route', 'apiStore', 'api-store:main');
+    application.register('store:main', Store, { instantiate: true });
+    application.register('model:module',    ApiModule,    { singleton: false });
+    application.register('model:class',     ApiClass,     { singleton: false });
+    application.register('model:classitem', ApiClassitem, { singleton: false });
+
+    application.inject('route', 'store', 'store:main');
+    application.inject('controller', 'store', 'store:main');
   }
 });
 

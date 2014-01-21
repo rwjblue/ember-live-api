@@ -1,42 +1,44 @@
-var alias = Ember.computed.alias;
+var filterBy = Ember.computed.filterBy;
 var notEmpty = Ember.computed.notEmpty;
 
 export default Ember.ObjectController.extend({
-  needs: ['application'],
-  application: alias('controllers.application'),
-  currentRouteName: alias('application.currentRouteName'),
+  showInherited: false,
+  showProtected: false,
+  showPrivate: false,
+  showDeprecated: true,
+
+  filteredClassitemsAncestry: function() {
+    var hierarchy = this.get('classitemHierarchy'),
+        showInherited = this.get('showInherited'),
+        showPrivate = this.get('showPrivate'),
+        showProtected = this.get('showProtected'),
+        showDeprecated = this.get('showDeprecated'),
+        _class = this;
+
+    return hierarchy.filter(function(classitemAncestry) {
+      var classitem = classitemAncestry.get('lastObject.classitem'),
+          className = classitem.get('class.name'),
+          access = classitem.get('access'),
+          deprecated = classitem.get('deprecated');
+
+      if (!showInherited && className !== _class.get('name')) return false;
+      if (!showPrivate && access === 'private') return false;
+      if (!showProtected && access === 'protected') return false;
+      if (!showDeprecated && deprecated === true) return false;
+      return true;
+    }).sortBy('classitem.name');
+  }.property('content', 'showInherited', 'showPrivate', 'showProtected', 'showDeprecated'),
+
+  filteredMethods:       filterBy('filteredClassitemsAncestry', 'firstObject.classitem.itemtype', 'method'),
+  filteredProperties:    filterBy('filteredClassitemsAncestry', 'firstObject.classitem.itemtype', 'property'),
+  filteredEvents:        filterBy('filteredClassitemsAncestry', 'firstObject.classitem.itemtype', 'event'),
+
+  hasClassitems:         notEmpty('filteredClassitemsAncestry.[]'),
+  hasFilteredMethods:    notEmpty('filteredMethods.[]'),
+  hasFilteredProperties: notEmpty('filteredProperties.[]'),
+  hasFilteredEvents:     notEmpty('filteredEvents.[]'),
 
   accessUpcase: function(){
     return this.get('access').toUpperCase();
-  }.property('access'),
-
-  typesPresent: function(){
-    return this.get('methodsPresent') ||
-           this.get('propertiesPresent') ||
-           this.get('eventsPresent');
-  }.property('methods', 'properties', 'events'),
-
-  methodsPresent: notEmpty('methods.[]'),
-  propertiesPresent: notEmpty('properties.[]'),
-  eventsPresent: notEmpty('events.[]'),
-
-  isAllRoute: function(){
-    return this.isActive('all');
-  }.property('currentRouteName'),
-
-  isMethodsRoute: function(){
-    return this.isActive('methods');
-  }.property('currentRouteName'),
-
-  isPropertiesRoute: function(){
-    return this.isActive('properties');
-  }.property('currentRouteName'),
-
-  isEventsRoute: function(){
-    return this.isActive('events');
-  }.property('currentRouteName'),
-
-  isActive: function(subroute){
-    return this.get('currentRouteName').indexOf('class.' + subroute) !== -1;
-  }
+  }.property('access')
 });
