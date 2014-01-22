@@ -19,7 +19,7 @@ Router.map(function() {
 });
 
 Router.reopen({
-  location: 'history'
+  location: 'hash'
 });
 
 export default Router;
