@@ -52,22 +52,24 @@ function mergeClassitemsRecursively(hierarchy, _class, classMixedInto, rootMixin
 }
 
 export default Model.extend({
-  project:        getProject(),
+  isClassOrNamepsace: true,
 
-  className:      alias('data.name'),
-  name:           alias('data.name'),
-  file:           alias('data.file'),
-  line:           alias('data.line'),
-  description:    alias('data.description'),
+  project:            getProject(),
 
-  module:         getModule('data.module'),
-  submodule:      getModule('data.submodule'),
-  extends:        getClass('data.extends'),
-  uses:           getClasses('data.uses'),
+  className:          alias('data.name'),
+  name:               alias('data.name'),
+  file:               alias('data.file'),
+  line:               alias('data.line'),
+  description:        alias('data.description'),
 
-  ownClassitems:  getOwnClassitems('data.name'),
-  isNamespace:    notEmpty('data.static'),
-  isClass:        empty('data.static'),
+  module:             getModule('data.module'),
+  submodule:          getModule('data.submodule'),
+  extends:            getClass('data.extends'),
+  uses:               getClasses('data.uses'),
+
+  ownClassitems:      getOwnClassitems('data.name'),
+  isNamespace:        notEmpty('data.static'),
+  isClass:            empty('data.static'),
 
   classitemHierarchy: function() {
     var hierarchy = {};

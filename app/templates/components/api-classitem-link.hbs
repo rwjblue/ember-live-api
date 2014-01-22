@@ -1,1 +1,7 @@
-{{link-to model.name route model.class.name model.name}}
+{{#link-to route model.class.name model.name}}
+  {{#if template}}
+    {{yield}}
+  {{else}}
+    {{model.name}}
+  {{/if}}
+{{/link-to}}

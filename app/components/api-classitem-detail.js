@@ -7,7 +7,7 @@ export default Ember.Component.extend(ItemUrlMixin, ItemClassesMixin, {
   additionalItemClasses: 'item-entry',
 
   mostRecentAncestor: function() {
-    return this.get('ancestry.lastObject')
+    return this.get('ancestry.lastObject');
   }.property('ancestry'),
 
   laterAncestors: function() {

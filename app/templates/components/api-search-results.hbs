@@ -1,0 +1,9 @@
+{{#each result in searchResults}}
+  {{!-- TODO: Refactor with a dynamic partial --}}
+  {{#if result.isClass}}
+    {{api-search-result-class model=result query=query}}
+  {{/if}}
+  {{#if result.isClassitem}}
+    {{api-search-result-classitem model=result query=query}}
+  {{/if}}
+{{/each}}

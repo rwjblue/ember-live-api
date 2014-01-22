@@ -1,0 +1,20 @@
+<h3 class="name">
+  <code class="search">
+    {{#api-classitem-link model=model}}
+      {{highlightedName}}
+    {{/api-classitem-link}}
+  </code>
+</h3>
+{{#if hasParams}}
+  <span class="args">
+    {{paramsString}}
+  </span>
+{{/if}}
+<div style="float: right;">
+  <span class="type">
+    {{link-to model.class.name 'class.index' model.class.name}}
+  </span>
+</div>
+<div class="meta">
+  Defined in {{api-file-link model=model}}
+</div>
