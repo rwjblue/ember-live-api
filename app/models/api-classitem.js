@@ -13,6 +13,8 @@ var Param = Model.extend({
 });
 
 export default Model.extend({
+  isClassitem:           true,
+
   project:               getProject(),
 
   file:                  alias('data.file'),

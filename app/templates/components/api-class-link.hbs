@@ -1,7 +1,23 @@
-{{#with model}}
-  {{#if isStub}}
-    {{name}}
+{{#if template}}
+  {{#if forceLink}}
+    {{#link-to 'class' model.name}}
+      {{yield}}
+    {{/link-to}}
   {{else}}
-    {{link-to name 'class' name}}
+    {{yield}}
   {{/if}}
-{{/with}}
+{{else}}
+  {{!-- 
+    TODO: Instead of `isStub`, use the "if template then yield"
+    strategy to override the link for classes that are referenced
+    but not defined in the project.
+
+    eg. {{#api-class-link}}Object{{/api-class-link}}
+
+  --}}
+  {{#if model.isStub}}
+    {{model.name}}
+  {{else}}
+    {{link-to model.name 'class' model.name}}
+  {{/if}}
+{{/if}}

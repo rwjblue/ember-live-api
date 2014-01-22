@@ -94,8 +94,8 @@ function filter(index, collection, query) {
 }
 
 function filterClassItems(index, query){
-  return makeArray(index).filter(function(classItem) {
-    return query.test(classItem.name);
+  return makeArray(index).filter(function(classitem) {
+    return query.test(classitem.name);
   });
 }
 
@@ -161,10 +161,10 @@ export default Ember.Object.extend({
   },
 
   search: function(query) {
-    var self = this,
+    var store = this,
         parsedQuery, compiledQuery, result, index, promises;
 
-    result = {};
+    result = [];
 
     if (!query) { return result; }
 
@@ -172,25 +172,27 @@ export default Ember.Object.extend({
     compiledQuery = compileParsedQuery(parsedQuery);
 
     var results = { data:     this.get('data'),
-                    files:    this.get('files'),
+                    // files:    this.get('files'),
                     modules:  this.get('modules'),
                     classes:  this.get('classes') };
 
     
       var classitems = results.data['classitems'];
 
-      // TODO: merge the results
-      result.files      = filter(results.files,   results.data.files,   compiledQuery.files     ).slice(0,10);
+      // result.files      = filter(results.files,   results.data.files,   compiledQuery.files     ).slice(0,10);
       result.modules    = filter(results.modules, results.data.modules, compiledQuery.modules   ).slice(0,10);
       result.classes    = filter(results.classes, results.data.classes, compiledQuery.classes   ).slice(0,10);
-      result.classItems = filterClassItems(classitems,  compiledQuery.classitems).slice(0,30);
+      result.classitems = filterClassItems(classitems,  compiledQuery.classitems).slice(0,30);
 
-      self.set('searchResults', result);
+      result.modules    = result.modules.map(function(data) { return store.buildItem('modules', data); });
+      result.classes    = result.classes.map(function(data) { return store.buildItem('classes', data); });
+      result.classitems = result.classitems.map(function(data) { return store.buildItem('classitems', data); });
 
-      return result;
+      var concatResults = result.modules.concat(result.classes, result.classitems);
+      return concatResults;
   },
 
-  buildItem: function(type, name, data) {
+  buildItem: function(type, data) {
     var fullName = 'model:' + type.singularize();
     var model = this.container.lookup(fullName);
     return model.setProperties({ store: this, data: data });
@@ -204,7 +206,7 @@ export default Ember.Object.extend({
 
     if (!itemData) {
       if (options && options.stub) {
-        var item = this.buildItem(type, name, {name: name});
+        var item = this.buildItem(type, {name: name});
         item.isStub = true;
         return item;
       } else {
@@ -212,11 +214,18 @@ export default Ember.Object.extend({
       }
     }
     
-    return this.buildItem(type, name, itemData);
+    return this.buildItem(type, itemData);
   },
 
   findClass: function(className, options) {
     return this.findItem('classes', className, options);
+  },
+
+  findClassitem: function(className, classitemName, options) {
+    return;
+    // return this.findItem('classitems', )
+    // var classitemFullName = className + '#' + classitemName;
+    // return store.buildItem('classitems', classitemData);
   },
 
   findOwnClassitems: function(className) {
@@ -225,7 +234,7 @@ export default Ember.Object.extend({
 
     return data.classitems.filterBy('class', className).map(function(classitemData) {
       var classitemFullName = className + '#' + classitemData.name;
-      return store.buildItem('classitems', classitemFullName, classitemData);
+      return store.buildItem('classitems', classitemData);
     });
   },
 

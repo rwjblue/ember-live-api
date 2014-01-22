@@ -1,0 +1,22 @@
+@import "compass";
+
+.api {
+  .search-field {
+    margin-bottom: 1.5em;
+  }
+
+  .search-field-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  .search-result-class, .search-result-classitem {
+    margin-top: 1em;
+    @include clearfix;
+
+    .search {
+      font-weight: normal;  
+    }
+  }
+}

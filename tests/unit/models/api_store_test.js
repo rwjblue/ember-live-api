@@ -166,7 +166,7 @@ test('search returns a valid search result object', function(){
     ok(results.files);
     ok(results.modules);
     ok(results.classes);
-    ok(results.classItems);
+    ok(results.classitems);
   }
 
   Ember.run(function(){
@@ -178,7 +178,7 @@ test('can actually search for classitems', function(){
   expect(1);
 
   function assertions(results){
-    ok(results.classItems.length > 0, 'some classItems were returned');
+    ok(results.classitems.length > 0, 'some classitems were returned');
   }
 
   Ember.run(function(){
