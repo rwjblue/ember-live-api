@@ -1,5 +1,5 @@
 import Model from 'appkit/api-store/model';
-import { getModule } from 'appkit/api-store/helpers';
+import { getModule, getClasses, getModules } from 'appkit/api-store/helpers';
 
 var alias = Ember.computed.alias;
 
@@ -12,21 +12,15 @@ export default Model.extend({
   line:           alias('data.line'),
   requires:       alias('data.requires'),
   parent:         getModule('data.module'),
+  classes:        getClasses('classNames'),
+  submodules:     getModules('submoduleNames'),
 
-  classes: function() {
-    var _this = this;
-
-    return Object.keys(this.get('data.classes')).map(function(className) {
-      return _this.store.findClass(className);
-    });
+  classNames: function() {
+    return Ember.keys(this.get('data.classes'));
   }.property('data.classes'),
 
-  submodules: function() {
-    var _this = this;
-
-    return Object.keys(this.get('data.submodules')).map(function(name) {
-      return _this.store.findModule(name);
-    });
-  }.property('data.submodules')
+  submoduleNames: function() {
+    return Ember.keys(this.get('data.submodules'));
+  }.property('data.submodules'),
 
 });
