@@ -42,6 +42,12 @@ function getClass(classNameKey, options) {
   }).property(classNameKey);
 }
 
+/*
+  classNamesKey is the name of the CP on the executing
+  class that returns the array of relevant classes. This 
+  method executes that CP, then converts the array of
+  class names into an array of class models.
+*/
 function getClasses(classNamesKey) {
   return Ember.computed(function() {
     var store = this.store,

@@ -1,0 +1,40 @@
+<h1 class="api-header">{{name}}</h1>
+
+<hr>
+
+{{#if parent}}
+  <p>Parent: {{api-module-link model=parent}}</p>
+{{/if}}
+
+{{#if requires}}
+  <p>Requires:</p>
+  <ul>
+    {{#each requires}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if description}}
+  <div class="description">
+    {{api-markdown text=description}}
+  </div>
+{{/if}}
+
+{{#if submodules}}
+	<h2>Submodules</h2>
+  <ul>
+    {{#each submodules}}
+      <li>{{api-module-link model=this}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if classes}}
+  <h2>Classes and Namespaces</h2>
+  <ul>
+    {{#each classes}}
+      <li>{{api-class-link model=this}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
